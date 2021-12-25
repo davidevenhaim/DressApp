@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?><androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpFragment"
+    >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo" />
+
+        <RelativeLayout
+            android:id="@+id/register_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_marginTop="5sp">
+
+            <EditText
+                android:id="@+id/register_name_input"
+                android:layout_width="280sp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:hint="Full Name"
+                android:textColor="@color/black"
+                android:textSize="28sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/register_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/register_name">
+
+            <EditText
+                android:id="@+id/register_phone_input"
+                android:layout_width="280sp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:hint="Phone"
+                android:textColor="@color/black"
+                android:textSize="28sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/register_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/register_phone">
+
+            <EditText
+                android:id="@+id/register_city_input"
+                android:layout_width="280sp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:hint="City"
+                android:textColor="@color/black"
+                android:textSize="28sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/register_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/register_city">
+
+            <EditText
+                android:id="@+id/register_address_input"
+                android:layout_width="280sp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:hint="Address"
+                android:textColor="@color/black"
+                android:textSize="28sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/register_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/register_address">
+
+            <EditText
+                android:id="@+id/register_email_input"
+                android:layout_width="280sp"
+                android:maxWidth="400sp"
+                android:minWidth="280sp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:hint="Email"
+                android:textColor="@color/black"
+                android:textSize="28sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/register_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/register_email">
+
+            <EditText
+                android:id="@+id/register_password_input"
+                android:layout_width="280sp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:textColor="@color/black"
+                android:textSize="28sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/already_member_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/register_password"
+            >
+
+            <Button
+                android:id="@+id/signup_btn"
+                android:layout_width="250sp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="20sp"
+                android:background="@drawable/app_btn"
+                android:text="Sign-Up" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/already_member_container">
+
+            <TextView
+                android:id="@+id/already_member"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5sp"
+                android:text="Already Have An Account?"
+                android:textColor="@color/grey" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/signup_progress"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
