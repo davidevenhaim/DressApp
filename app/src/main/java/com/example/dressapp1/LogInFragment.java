@@ -111,24 +111,28 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        pBar.setVisibility(View.GONE);
                         if(task.isSuccessful()) {
                             if(user.isEmailVerified()) {
                             // send to homepage
-                            Toast.makeText(getActivity(), "Login successfully", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Login successfully", Toast.LENGTH_SHORT).show();
+//                            pBar.setVisibility(View.INVISIBLE);
                             }else {
                                 user.sendEmailVerification();
                                 Toast.makeText(getActivity(), "Email Verification Sent, check your inbox! and try login again", Toast.LENGTH_SHORT).show();
                                 Log.d("E", "Email verification.");
+//                                pBar.setVisibility(View.INVISIBLE);
+                                setEnabled(true);
                             }
                         }else {
                             Toast.makeText(getActivity(), "Login failed. Email/Password is incorrect", Toast.LENGTH_SHORT).show();
                             Log.d("ERR","login failed");
-                        }
-                            pBar.setVisibility(View.INVISIBLE);
+//                            pBar.setVisibility(View.INVISIBLE);
                             setEnabled(true);
+                        }
+                        Log.d("E", "finished siginin in.");
                     }
                 });
-        Log.d("E", "finished siginin up.");
     }
 
 }
