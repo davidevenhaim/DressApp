@@ -120,7 +120,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
         pBar.setVisibility(View.VISIBLE);
         setEnabled(false);
-        Log.d("Success", "1@31231231");
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
