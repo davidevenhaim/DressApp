@@ -22,7 +22,8 @@
         android:padding="5sp"
         >
 
-        <ImageView
+        <ImageButton
+            android:background="@color/cardview_shadow_end_color"
             android:id="@+id/bottom_bar_search"
             android:layout_width="20dp"
             android:layout_height="match_parent"
@@ -30,7 +31,8 @@
             android:src="@drawable/search"
 
             />
-        <ImageView
+        <ImageButton
+            android:background="@color/cardview_shadow_end_color"
             android:id="@+id/bottom_bar_fav"
             android:layout_width="20dp"
             android:layout_height="match_parent"
@@ -38,11 +40,12 @@
             android:src="@drawable/favorite"
             />
 
-        <ImageView
+        <ImageButton
+            android:background="@color/cardview_shadow_end_color"
             android:id="@+id/bottom_bar_profile"
             android:layout_width="20dp"
-            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:layout_height="match_parent"
             android:src="@drawable/profile"
             />
     </LinearLayout>

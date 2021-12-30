@@ -19,12 +19,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="202p"
         >
-        <ImageView
+        <ImageButton
+            android:id="@+id/add_new_post_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/add_product_btn"
+            android:background="@color/cardview_shadow_end_color"
             />
     </RelativeLayout>
 

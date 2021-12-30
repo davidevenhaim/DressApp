@@ -26,7 +26,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LogInFragment extends Fragment implements View.OnClickListener {
     View view;
-    TextView forgotPassword;
     Button loginBtn, registerBtn;
     EditText emailInput, passwordInput;
     ProgressBar pBar;
@@ -49,14 +48,12 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
 
         pBar = view.findViewById(R.id.login_progress);
 
-        forgotPassword = view.findViewById(R.id.forgot_pass);
         loginBtn = view.findViewById(R.id.login_btn);
         registerBtn = view.findViewById(R.id.register_btn);
 
         emailInput = view.findViewById(R.id.login_email_input);
         passwordInput = view.findViewById(R.id.login_password_input);
 
-        forgotPassword.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);
 
@@ -68,9 +65,6 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
         switch(v.getId()) {
             case R.id.login_btn:
                 loginUser();
-                break;
-            case R.id.forgot_pass:
-                Navigation.findNavController(view).navigate(LogInFragmentDirections.actionLogInFragmentToForgotPassFragment());
                 break;
             case R.id.register_btn:
                 Navigation.findNavController(view).navigate(LogInFragmentDirections.actionLogInFragmentToSignUpFragment());
@@ -114,9 +108,9 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
                         pBar.setVisibility(View.GONE);
                         if(task.isSuccessful()) {
                             if(user.isEmailVerified()) {
-                            // send to homepage
-//                            Toast.makeText(getActivity(), "Login successfully", Toast.LENGTH_SHORT).show();
-//                            pBar.setVisibility(View.INVISIBLE);
+                             Navigation.findNavController(view).navigate(LogInFragmentDirections.actionLogInFragmentToSelectGenderFragment());
+                            Toast.makeText(getActivity(), "Login successfully", Toast.LENGTH_SHORT).show();
+                            pBar.setVisibility(View.INVISIBLE);
                             }else {
                                 user.sendEmailVerification();
                                 Toast.makeText(getActivity(), "Email Verification Sent, check your inbox! and try login again", Toast.LENGTH_SHORT).show();
@@ -133,6 +127,7 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
                         Log.d("E", "finished siginin in.");
                     }
                 });
+        Navigation.findNavController(view).navigate(LogInFragmentDirections.actionLogInFragmentToSelectGenderFragment());
     }
 
 }

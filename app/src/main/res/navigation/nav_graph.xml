@@ -14,9 +14,6 @@
             android:id="@+id/action_logInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
         <action
-            android:id="@+id/action_logInFragment_to_forgotPassFragment"
-            app:destination="@id/forgotPassFragment" />
-        <action
             android:id="@+id/action_logInFragment_to_selectGenderFragment"
             app:destination="@id/selectGenderFragment" />
     </fragment>
@@ -30,19 +27,23 @@
             app:destination="@id/logInFragment" />
     </fragment>
     <fragment
-        android:id="@+id/forgotPassFragment"
-        android:name="com.example.dressapp1.ForgotPassFragment"
-        android:label="fragment_forgot_pass"
-        tools:layout="@layout/fragment_forgot_pass" >
-        <action
-            android:id="@+id/action_forgotPassFragment_to_logInFragment"
-            app:destination="@id/logInFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/selectGenderFragment"
         android:name="com.example.dressapp1.SelectGenderFragment"
         android:label="fragment_select_gender"
-        tools:layout="@layout/fragment_select_gender" />
+        tools:layout="@layout/fragment_select_gender" >
+        <action
+            android:id="@+id/action_selectGenderFragment_to_itemsFeedFragment"
+            app:destination="@id/itemsFeedFragment" />
+        <action
+            android:id="@+id/action_selectGenderFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_selectGenderFragment_to_newPostFragment2"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_selectGenderFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/itemFragment"
         android:name="com.example.dressapp1.ItemFragment"
@@ -52,5 +53,34 @@
         android:id="@+id/itemsFeedFragment"
         android:name="com.example.dressapp1.ItemsFeedFragment"
         android:label="fragment_items_feed"
-        tools:layout="@layout/fragment_items_feed" />
+        tools:layout="@layout/fragment_items_feed" >
+        <action
+            android:id="@+id/action_itemsFeedFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_itemsFeedFragment_to_productPageFragment"
+            app:destination="@id/productPageFragment" />
+        <action
+            android:id="@+id/action_itemsFeedFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newPostFragment"
+        android:name="com.example.dressapp1.NewPostFragment"
+        android:label="fragment_new_post"
+        tools:layout="@layout/fragment_new_post" >
+        <action
+            android:id="@+id/action_newPostFragment_to_productPageFragment"
+            app:destination="@id/productPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productPageFragment"
+        android:name="com.example.dressapp1.ProductPageFragment"
+        android:label="fragment_product_page"
+        tools:layout="@layout/fragment_product_page" />
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:name="com.example.dressapp1.MyProfileFragment"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" />
 </navigation>
