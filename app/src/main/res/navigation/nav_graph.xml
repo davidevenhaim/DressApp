@@ -43,4 +43,14 @@
         android:name="com.example.dressapp1.SelectGenderFragment"
         android:label="fragment_select_gender"
         tools:layout="@layout/fragment_select_gender" />
+    <fragment
+        android:id="@+id/itemFragment"
+        android:name="com.example.dressapp1.ItemFragment"
+        android:label="fragment_item"
+        tools:layout="@layout/fragment_item" />
+    <fragment
+        android:id="@+id/itemsFeedFragment"
+        android:name="com.example.dressapp1.ItemsFeedFragment"
+        android:label="fragment_items_feed"
+        tools:layout="@layout/fragment_items_feed" />
 </navigation>
