@@ -20,67 +20,18 @@
         <include layout="@layout/top_bar_nav" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/image_1_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5sp"
-        app:layout_constraintTop_toBottomOf="@+id/top_bar_container"
-        >
-
-        <ImageButton
-            android:id="@+id/image_1"
-            android:layout_width="200dp"
-            android:layout_height="280dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/woman" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/image_2_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5sp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_items"
+        android:layout_width="409dp"
+        android:layout_height="633dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_bar_container"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_bar_container"
-        >
-
-        <ImageView
-            android:id="@+id/image_2"
-            android:layout_width="200dp"
-            android:layout_height="280dp"
-            android:src="@drawable/man" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/image_3_container"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="5sp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/image_1_container"
-        android:layout_marginLeft="5sp">
-        <ImageView
-            android:id="@+id/image_3"
-            android:layout_width="200dp"
-            android:layout_height="280dp"
-            android:src="@drawable/man" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/image_4_container"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="5sp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_2_container"
-        >
-        <ImageView
-            android:id="@+id/image_4"
-            android:layout_width="200dp"
-            android:layout_height="280dp"
-            android:src="@drawable/man" />
-    </RelativeLayout>
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar_container" />
 
     <RelativeLayout
         android:id="@+id/bottom_bar_container"
