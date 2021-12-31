@@ -127,7 +127,6 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
                         Log.d("E", "finished siginin in.");
                     }
                 });
-        Navigation.findNavController(view).navigate(LogInFragmentDirections.actionLogInFragmentToSelectGenderFragment());
     }
 
 }
