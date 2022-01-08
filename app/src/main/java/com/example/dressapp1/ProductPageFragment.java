@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.example.dressapp1.model.DBModel;
 import com.example.dressapp1.model.Product;
 import com.example.dressapp1.model.User;
 import com.google.android.gms.tasks.Task;
+import com.squareup.picasso.Picasso;
 
 public class ProductPageFragment extends Fragment {
     View view;
@@ -34,7 +36,6 @@ public class ProductPageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         productId = ProductPageFragmentArgs.fromBundle(getArguments()).getProductId();
-        ownerId = ProductPageFragmentArgs.fromBundle(getArguments()).getOwnerId();
         curProduct = new Product();
         owner = new User();
     }
@@ -56,32 +57,23 @@ public class ProductPageFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        DBModel.dbInstance.getUserById(ownerId, new DBModel.GetUserByIdListener() {
-            @Override
-            public void onComplete(Task task, User user) {
-                if(task.isSuccessful()) {
-                    owner = user;
-                } else {
-                    // set error.
-                }
-            }
-        });
-
-        DBModel.dbInstance.getProduct(productId, new DBModel.GetProductListener() {
-            @Override
-            public void onComplete(Task task, Product product) {
-                if(task.isSuccessful()) {
-                    curProduct = product;
+        if(productId != null) {
+            DBModel.dbInstance.getProduct(productId, new DBModel.GetProductListener() {
+                @Override
+                public void onComplete(Product product) {
+                    if(product != null) {
+                        curProduct = product;
+                        priceText.setText(curProduct.getPrice());
+                        sizeText.setText(curProduct.getSize());
+                        String url = curProduct.getImg().toString();
+                        if(!url.isEmpty()) {
+                            Picasso.get().load(url).into(productImg);
+                        }
+                    }
                     progressBar.setVisibility(View.INVISIBLE);
-                    sizeText.setText(curProduct.getSize());
-                    priceText.setText(curProduct.getPrice());
-                    productImg.setImageURI(curProduct.getImg());
-                }else {
-                    // set error.
                 }
-            }
-        });
-
+            });
+        }
 
         return view;
     }

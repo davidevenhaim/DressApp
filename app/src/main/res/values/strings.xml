@@ -24,8 +24,10 @@
         <item>XL</item>
     </string-array>
     <string-array name="choose_category">
-        <item>Dress</item>
-        <item>Suit</item>
         <item>Blazer</item>
+        <item>Dress</item>
+        <item>Jacket</item>
+        <item>Pants</item>
+        <item>Suit</item>
     </string-array>
 </resources>

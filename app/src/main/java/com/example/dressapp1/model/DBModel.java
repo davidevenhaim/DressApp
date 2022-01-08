@@ -2,14 +2,19 @@ package com.example.dressapp1.model;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +24,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -26,6 +33,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Array;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class DBModel {
@@ -79,6 +88,7 @@ public class DBModel {
 
     public void uploadProduct(Product product, Bitmap bitmap, UploadProductListener listener) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DocumentReference userRef = db.collection("users").document(user.getUid());
 
         Map<String, Object> dbProduct = new HashMap<>();
         dbProduct.put("category", product.getCategory());
@@ -86,6 +96,7 @@ public class DBModel {
         dbProduct.put("gender", product.getGender());
         dbProduct.put("price", product.getPrice());
         dbProduct.put("timestamp", FieldValue.serverTimestamp());
+        dbProduct.put("ownerRef", userRef);
 
         DocumentReference productDocRef = db.collection("products").document();
 
@@ -141,7 +152,7 @@ public class DBModel {
     }
 
     public interface GetProductListener{
-        void onComplete(Task task,Product product);
+        void onComplete(Product product);
     }
 
     public void getProduct(String productId, GetProductListener listener ) {
@@ -151,20 +162,53 @@ public class DBModel {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReference();
-                DocumentSnapshot snap = task.getResult();
-
+                DocumentSnapshot document = task.getResult();
                 storageRef.child("images/" + productId + ".jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
-                        Product product = new Product();
-                        product.setCategory(snap.get("category").toString());
-                        product.setGender(snap.get("gender").toString());
-                        product.setPrice(snap.get("price").toString());
-                        product.setSize(snap.get("size").toString());
-                        product.setImg(task.getResult());
-                        listener.onComplete(task, product);
+                        if(document.exists()) {
+                            Product product = Product.fromJson(document.getData());
+                            Log.d("product", product.getCategory() + product.getGender() + product.getPrice());
+                            product.setImg(task.getResult());
+                            listener.onComplete(product);
+                        }else {
+                            listener.onComplete(null);
+                        }
                     }
                 });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onComplete(null);
+            }
+        });
+    }
+
+    public interface GetAllProductsListener{
+        void onComplete(List<Product> productsList);
+    }
+
+    public void getAllProducts(Long since,GetAllProductsListener listener) {
+        db.collection("products").whereGreaterThanOrEqualTo(Product.TIME, new Timestamp(since, 0))
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    LinkedList<Product> productList = new LinkedList<Product>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Product p = Product.fromJson(document.getData());
+                        if(p != null) {
+                            productList.add(p);
+                        }
+                    listener.onComplete(productList);
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onComplete(null);
             }
         });
     }

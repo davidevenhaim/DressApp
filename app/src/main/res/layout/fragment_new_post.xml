@@ -15,10 +15,12 @@
         android:layout_marginBottom="250dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/upload_img"
+        android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_bar"
         app:layout_constraintTop_toTopOf="parent"
-        />
+    />
 
     <LinearLayout
         android:id="@+id/gender_container"

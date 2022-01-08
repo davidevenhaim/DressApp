@@ -10,12 +10,13 @@
 
     <ImageView
         android:id="@+id/product_preview"
-        android:layout_width="320dp"
-        android:layout_height="520dp"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
         android:layout_marginTop="36dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_bar" />
+        app:layout_constraintTop_toBottomOf="@id/top_bar"
+        />
 
     <FrameLayout android:id="@+id/favorite_frame"
         android:layout_width="70dp"
@@ -30,6 +31,7 @@
             android:id="@+id/favorite_btn"
             android:layout_width="70dp"
             android:layout_height="70dp"
+            android:background="@color/white"
             android:backgroundTint="@color/white"
             android:src="@drawable/favorite"
             />
@@ -38,18 +40,18 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@drawable/circle" />
-
     </FrameLayout>
 
     <LinearLayout
         android:id="@+id/action_container"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/favorite_frame">
+        app:layout_constraintTop_toBottomOf="@+id/favorite_frame"
+        >
 
         <FrameLayout android:id="@+id/profile_frame"
             android:layout_width="90dp"
@@ -80,6 +82,7 @@
                 android:layout_width="100sp"
                 android:layout_height="wrap_content"
                 android:text="@string/call"
+                android:textColor="@color/black"
                 />
             <Button
                 android:id="@+id/product_map"
@@ -130,5 +133,14 @@
         app:layout_constraintRight_toRightOf="parent"
         />
 
+    <include
+        android:id="@+id/bottom_bar"
+        layout="@layout/bottom_bar_nav"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+    />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,10 +40,10 @@ public class SelectGenderFragment extends Fragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.man_btn:
-                Navigation.findNavController(view).navigate(SelectGenderFragmentDirections.actionSelectGenderFragmentToItemsFeedFragment());
+                Navigation.findNavController(view).navigate(SelectGenderFragmentDirections.actionSelectGenderFragmentToItemsFeedFragment(true));
                 break;
             case R.id.woman_btn:
-                Navigation.findNavController(view).navigate(SelectGenderFragmentDirections.actionSelectGenderFragmentToItemsFeedFragment());
+                Navigation.findNavController(view).navigate(SelectGenderFragmentDirections.actionSelectGenderFragmentToItemsFeedFragment(false));
                 break;
             case R.id.add_new_post_btn:
                 Navigation.findNavController(view).navigate(SelectGenderFragmentDirections.actionSelectGenderFragmentToNewPostFragment());

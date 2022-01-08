@@ -133,6 +133,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="20sp"
                 android:background="@drawable/app_btn"
+                android:textColor="@color/black"
                 android:text="Sign-Up" />
         </RelativeLayout>
         <RelativeLayout

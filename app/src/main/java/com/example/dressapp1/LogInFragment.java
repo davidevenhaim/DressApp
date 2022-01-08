@@ -102,17 +102,18 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
             public void onComplete(FirebaseUser user, Task<AuthResult> task) {
                 if(task.isSuccessful()) {
                     if(user.isEmailVerified()) {
+//                        Navigation.findNavController(view).popBackStack(R.id.logInFragment, true);
                         Navigation.findNavController(view).navigate(LogInFragmentDirections.actionLogInFragmentToSelectGenderFragment());
                         Toast.makeText(getActivity(), "Login successfully", Toast.LENGTH_SHORT).show();
                         pBar.setVisibility(View.INVISIBLE);
-                    }else {
+                    } else {
                         user.sendEmailVerification();
                         Toast.makeText(getActivity(), "Email Verification Sent, check your inbox! and try login again", Toast.LENGTH_SHORT).show();
                         Log.d("E", "Email verification.");
                                 pBar.setVisibility(View.INVISIBLE);
                         setEnabled(true);
                     }
-                }else {
+                } else {
                     Toast.makeText(getActivity(), "Login failed. Email/Password is incorrect", Toast.LENGTH_SHORT).show();
                     Log.d("ERR","login failed");
                     pBar.setVisibility(View.INVISIBLE);

@@ -12,10 +12,14 @@
         tools:layout="@layout/fragment_log_in" >
         <action
             android:id="@+id/action_logInFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            />
         <action
             android:id="@+id/action_logInFragment_to_selectGenderFragment"
-            app:destination="@id/selectGenderFragment" />
+            app:destination="@id/selectGenderFragment"
+            app:popUpToInclusive="true"
+            app:popUpTo="@+id/fragment_log_in"
+            />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -63,6 +67,9 @@
         <action
             android:id="@+id/action_itemsFeedFragment_to_myProfileFragment"
             app:destination="@id/myProfileFragment" />
+        <argument
+            android:name="isMan"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
@@ -80,10 +87,12 @@
         tools:layout="@layout/fragment_product_page" >
         <argument
             android:name="productId"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="ownerId"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
