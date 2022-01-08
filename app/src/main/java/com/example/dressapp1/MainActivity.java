@@ -15,10 +15,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new FirebaseOptions.Builder()
-                .setApiKey("AIzaSyD0VES7-Rwrr1TafXES1FZFZ3aY3vDqE7A")
-                .setDatabaseUrl("https://dressapp-ba7fe-default-rtdb.europe-west1.firebasedatabase.app")
-                .setApplicationId("dressapp-ba7fe")
-                .build();
     }
 }

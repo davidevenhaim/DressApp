@@ -2,7 +2,6 @@ package com.example.dressapp1;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -14,11 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dressapp1.model.DBModel;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +27,6 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
     Button loginBtn, registerBtn;
     EditText emailInput, passwordInput;
     ProgressBar pBar;
-    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +34,6 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        mAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -100,33 +96,31 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
         }
         pBar.setVisibility(View.VISIBLE);
         setEnabled(false);
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        pBar.setVisibility(View.GONE);
-                        if(task.isSuccessful()) {
-                            if(user.isEmailVerified()) {
-                             Navigation.findNavController(view).navigate(LogInFragmentDirections.actionLogInFragmentToSelectGenderFragment());
-                            Toast.makeText(getActivity(), "Login successfully", Toast.LENGTH_SHORT).show();
-                            pBar.setVisibility(View.INVISIBLE);
-                            }else {
-                                user.sendEmailVerification();
-                                Toast.makeText(getActivity(), "Email Verification Sent, check your inbox! and try login again", Toast.LENGTH_SHORT).show();
-                                Log.d("E", "Email verification.");
-//                                pBar.setVisibility(View.INVISIBLE);
-                                setEnabled(true);
-                            }
-                        }else {
-                            Toast.makeText(getActivity(), "Login failed. Email/Password is incorrect", Toast.LENGTH_SHORT).show();
-                            Log.d("ERR","login failed");
-//                            pBar.setVisibility(View.INVISIBLE);
-                            setEnabled(true);
-                        }
-                        Log.d("E", "finished siginin in.");
+
+        DBModel.dbInstance.loginUser(email, password, new DBModel.LoginUserListener() {
+            @Override
+            public void onComplete(FirebaseUser user, Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    if(user.isEmailVerified()) {
+                        Navigation.findNavController(view).navigate(LogInFragmentDirections.actionLogInFragmentToSelectGenderFragment());
+                        Toast.makeText(getActivity(), "Login successfully", Toast.LENGTH_SHORT).show();
+                        pBar.setVisibility(View.INVISIBLE);
+                    }else {
+                        user.sendEmailVerification();
+                        Toast.makeText(getActivity(), "Email Verification Sent, check your inbox! and try login again", Toast.LENGTH_SHORT).show();
+                        Log.d("E", "Email verification.");
+                                pBar.setVisibility(View.INVISIBLE);
+                        setEnabled(true);
                     }
-                });
+                }else {
+                    Toast.makeText(getActivity(), "Login failed. Email/Password is incorrect", Toast.LENGTH_SHORT).show();
+                    Log.d("ERR","login failed");
+                    pBar.setVisibility(View.INVISIBLE);
+                    setEnabled(true);
+                }
+            }
+        });
+
     }
 
 }

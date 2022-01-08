@@ -11,4 +11,21 @@
     <string name="size">Size</string>
     <string name="price">Price</string>
     <string name="upload">Upload</string>
+    <string name="call">Call</string>
+    <string name="map">Map</string>
+    <string-array name="choose_gender">
+        <item>Man</item>
+        <item>Woman</item>
+    </string-array>
+    <string-array name="choose_size">
+        <item>S</item>
+        <item>M</item>
+        <item>L</item>
+        <item>XL</item>
+    </string-array>
+    <string-array name="choose_category">
+        <item>Dress</item>
+        <item>Suit</item>
+        <item>Blazer</item>
+    </string-array>
 </resources>

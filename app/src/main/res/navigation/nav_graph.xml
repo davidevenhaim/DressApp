@@ -77,7 +77,14 @@
         android:id="@+id/productPageFragment"
         android:name="com.example.dressapp1.ProductPageFragment"
         android:label="fragment_product_page"
-        tools:layout="@layout/fragment_product_page" />
+        tools:layout="@layout/fragment_product_page" >
+        <argument
+            android:name="productId"
+            app:argType="string" />
+        <argument
+            android:name="ownerId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
         android:name="com.example.dressapp1.MyProfileFragment"

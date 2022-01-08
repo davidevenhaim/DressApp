@@ -2,7 +2,6 @@ package com.example.dressapp1;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -17,15 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthEmailException;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.dressapp1.model.DBModel;
+import com.example.dressapp1.model.User;
 
 public class SignUpFragment extends Fragment implements View.OnClickListener {
     View view;
@@ -33,12 +25,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     TextView alreadyMember;
     ProgressBar pBar;
     EditText fullNameInput, phoneInput, addressInput, cityInput, emailInput, passwordInput;
-    FirebaseAuth mAuth;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DatabaseReference ref = FirebaseDatabase.getInstance("https://dressapp-ba7fe-default-rtdb.europe-west1.firebasedatabase.app").getReference();
-        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -124,52 +114,21 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         }
 
         pBar.setVisibility(View.VISIBLE);
+//        setEnabled(false);
+
+        User user = new User(address, city, email, fullName, phone);
         setEnabled(false);
-
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            User user = new User(address, city, email, fullName, phone);
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user)
-                                    .addOnCompleteListener(task1 -> {
-                                        Log.d("TASK11", "ENTERED TASK 1");
-                                        if (task1.isSuccessful()) {
-                                            Toast.makeText(getActivity(), "User Created - Check your email inbox", Toast.LENGTH_LONG).show();
-                                            FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
-                                            Navigation.findNavController(view).navigate(SignUpFragmentDirections.actionSignUpFragmentToLogInFragment());
-                                            Log.d("Success", "Email sent");
-                                        } else {
-                                            Toast.makeText(getActivity(), "User could not be created", Toast.LENGTH_LONG).show();
-                                            Log.d("ELSE", "Secondary else case reached.");
-                                        }
-                                    });
-                        }    else {
-                            Log.d("ELSE", "MAIN else case reached");
-                            try {
-                                throw task.getException();
-                            }
-                            catch (FirebaseAuthInvalidCredentialsException e) {
-                                Toast.makeText(getActivity(), "Invalid Password", Toast.LENGTH_LONG).show();
-                            }
-                            catch (FirebaseAuthEmailException e){
-                                Toast.makeText(getActivity(), "Invalid Email", Toast.LENGTH_LONG).show();
-                            }
-                            catch (FirebaseAuthException e){
-                                Toast.makeText(getActivity(), "Invalid Credentials", Toast.LENGTH_LONG).show();
-                            }
-                            catch (Exception e) {
-                                e.printStackTrace();
-                                Toast.makeText(getActivity(), "Error creating user", Toast.LENGTH_LONG).show();
-                            }
-
-                        }
-                            pBar.setVisibility(View.INVISIBLE);
-                            setEnabled(true);
-                    }
-                });
+        DBModel.dbInstance.registerUser(user, password, (user1, task) -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getActivity(), "User Created - Check your email inbox", Toast.LENGTH_LONG).show();
+                user1.sendEmailVerification();
+                Navigation.findNavController(view).navigate(SignUpFragmentDirections.actionSignUpFragmentToLogInFragment());
+                Log.d("Success", "Email sent");
+            } else {
+                Toast.makeText(getActivity(), "User could not be created", Toast.LENGTH_LONG).show();
+                Log.d("ELSE", "Secondary else case reached.");
+            }
+            setEnabled(true);
+        });
     }
 }

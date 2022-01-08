@@ -13,7 +13,6 @@
         android:layout_width="300dp"
         android:layout_height="220dp"
         android:layout_marginBottom="250dp"
-        android:src="@drawable/upload_img"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +22,7 @@
 
     <LinearLayout
         android:id="@+id/gender_container"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -42,14 +41,14 @@
         <Spinner
             android:id="@+id/select_gender"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/category_container"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,14 +66,14 @@
         <Spinner
             android:id="@+id/select_category"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/size_container"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,30 +91,61 @@
         <Spinner
             android:id="@+id/select_size"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/new_post_price"
-        android:layout_width="200sp"
+
+    <LinearLayout
+        android:id="@+id/price_container"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:hint="@string/price"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/size_container" />
+        app:layout_constraintTop_toBottomOf="@+id/size_container">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/price"
+            android:textSize="25sp"
+            android:layout_marginRight="5dp"
+            />
+
+        <EditText
+            android:id="@+id/new_post_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+             />
+    </LinearLayout>
+
 
     <Button
+        android:id="@+id/upload_post_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/app_btn"
         android:text="@string/upload"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/new_post_price"
+
+        />
+
+    <ProgressBar
+        android:id="@+id/new_post_progress"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

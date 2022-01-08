@@ -1,7 +1,10 @@
-package com.example.dressapp1;
+package com.example.dressapp1.model;
+
+import android.widget.ArrayAdapter;
 
 public class User {
     String email, phone, address, fullName,city;
+    String[] products;
 
     public User(){}
 
@@ -23,6 +26,10 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public String[] getProducts() {
+        return products;
     }
 
     public String getFullName() {
