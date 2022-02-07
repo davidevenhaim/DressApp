@@ -13,14 +13,14 @@ public class ProductListFragmentViewModel extends ViewModel {
 
     LiveData<List<Product>> data;
 
-    ProductListFragmentViewModel() {
-        DBModel.dbInstance.getAllProducts(new Model. {
-            @Override
-            public void onComplete() {
-//                data
-            }
-        });
-    }
+//    ProductListFragmentViewModel() {ProductListFragmentViewModel
+//        DBModel.dbInstance.getAllProducts(new DBModel.GetAllProductsListener() {
+//            @Override
+//            public void onComplete() {
+////                data
+//            }
+//        });
+//    }
 
     public LiveData<List<Product>> getData() {
         return data;
