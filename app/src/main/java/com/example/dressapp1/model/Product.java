@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.dressapp1.MainActivity;
+import com.example.dressapp1.MyApplication;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
@@ -14,7 +15,7 @@ import java.util.Map;
 public class Product {
     String size, price, gender, category;
     Uri img;
-    Timestamp createdAt;
+    Long updatedAt;
 
     final static String ID = "id";
     final static String CATEGORY = "category";
@@ -33,12 +34,12 @@ public class Product {
         this.category = category;
     }
 
-    public Product(String size, String price, String gender, String category, Timestamp ts) {
+    public Product(String size, String price, String gender, String category, Long lastU) {
         this.size = size;
         this.price = price;
         this.gender = gender;
         this.category = category;
-        this.createdAt = ts;
+        this.updatedAt = lastU;
     }
 
     public String getSize() {
@@ -57,6 +58,10 @@ public class Product {
 
     public String getCategory() {
         return category;
+    }
+
+    public long getLastUpdated() {
+        return updatedAt;
     }
 
     public void setSize(String size) {
@@ -87,23 +92,26 @@ public class Product {
         String category = json.get(CATEGORY).toString();
         Timestamp ts =  (Timestamp) json.get(TIME);
 
-        Product product = new Product(size, price, gender, category, ts);
+        Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()));
 
         return product;
     }
 
     static Long getLocalLastUpdated(){
-        Long localLastUpdate = MainActivity.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE)
+        Long localLastUpdate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE)
                 .getLong("STUDENTS_LAST_UPDATE",0);
         return localLastUpdate;
     }
 
     static void setLocalLastUpdated(Long date){
-        SharedPreferences.Editor editor = MainActivity.getContext()
+        SharedPreferences.Editor editor = MyApplication.getContext()
                 .getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
         editor.putLong("STUDENTS_LAST_UPDATE",date);
         editor.commit();
         Log.d("TAG", "new lud " + date);
     }
+
+
+
 
 }

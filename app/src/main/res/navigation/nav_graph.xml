@@ -47,6 +47,12 @@
         <action
             android:id="@+id/action_selectGenderFragment_to_myProfileFragment"
             app:destination="@id/myProfileFragment" />
+        <action
+            android:id="@+id/action_selectGenderFragment_to_productGridFragment"
+            app:destination="@id/productGridFragment" />
+        <action
+            android:id="@+id/action_selectGenderFragment_to_productGridFragment2"
+            app:destination="@id/productGridFragment" />
     </fragment>
     <fragment
         android:id="@+id/itemFragment"
@@ -99,4 +105,19 @@
         android:name="com.example.dressapp1.MyProfileFragment"
         android:label="fragment_my_profile"
         tools:layout="@layout/fragment_my_profile" />
+    <fragment
+        android:id="@+id/productGridFragment"
+        android:name="com.example.dressapp1.ProductGridFragment"
+        android:label="fragment_product_grid"
+        tools:layout="@layout/fragment_product_grid" >
+        <action
+            android:id="@+id/action_productGridFragment_to_productPageFragment"
+            app:destination="@id/productPageFragment" />
+        <action
+            android:id="@+id/action_productGridFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_productGridFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
+    </fragment>
 </navigation>

@@ -189,6 +189,7 @@ public class DBModel {
         void onComplete(List<Product> productsList);
     }
 
+
     public void getAllProducts(Long since,GetAllProductsListener listener) {
         db.collection("products").whereGreaterThanOrEqualTo(Product.TIME, new Timestamp(since, 0))
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -198,6 +199,7 @@ public class DBModel {
                     LinkedList<Product> productList = new LinkedList<Product>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Product p = Product.fromJson(document.getData());
+
                         if(p != null) {
                             productList.add(p);
                         }

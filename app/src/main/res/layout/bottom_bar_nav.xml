@@ -4,7 +4,6 @@
     android:layout_height="wrap_content">
     <LinearLayout
         android:id="@+id/board_frame"
-        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.8"
@@ -12,6 +11,7 @@
         android:orientation="vertical"
         android:overScrollMode="never"
         android:padding="0dp"
+
         android:gravity="center_vertical"
         >
         >

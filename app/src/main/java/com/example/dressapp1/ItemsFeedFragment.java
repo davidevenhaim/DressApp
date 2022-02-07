@@ -2,23 +2,15 @@ package com.example.dressapp1;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.dressapp1.model.DBModel;
 import com.example.dressapp1.model.Product;
-import com.squareup.picasso.Picasso;
 
 public class ItemsFeedFragment extends Fragment {
     View view;
@@ -28,7 +20,6 @@ public class ItemsFeedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -37,8 +28,7 @@ public class ItemsFeedFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_items_feed, container, false);
 
-        DBModel.dbInstance.getAllProducts();
-
+//        DBModel.dbInstance.getAllProducts();
         return view;
     }
 //
