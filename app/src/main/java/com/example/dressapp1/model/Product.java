@@ -13,6 +13,7 @@ import androidx.room.PrimaryKey;
 
 import com.example.dressapp1.MainActivity;
 import com.example.dressapp1.MyApplication;
+import com.example.dressapp1.model.helpers.Constants;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
@@ -27,14 +28,6 @@ public class Product implements Parcelable {
     String size, price, gender, category, img;
     Long updatedAt;
 
-    final static String ID = "id";
-    final static String CATEGORY = "category";
-    final static String GENDER = "gender";
-    final static String OWNER = "ownerRef";
-    final static String PRICE = "price";
-    final static String SIZE = "size";
-    final static String TIME = "timestamp";
-
     public Product(){}
 
     public Product(String size, String price, String gender, String category ) {
@@ -44,13 +37,12 @@ public class Product implements Parcelable {
         this.category = category;
     }
 
-    public Product(String size, String price, String gender, String category, Long lastU, String id) {
+    public Product(String size, String price, String gender, String category, Long lastU) {
         this.size = size;
         this.price = price;
         this.gender = gender;
         this.category = category;
         this.updatedAt = lastU;
-        this.id = id;
     }
 
     public String getSize() {
@@ -58,6 +50,10 @@ public class Product implements Parcelable {
     }
 
     public String getImg() {return img;}
+
+    public String getId() {
+        return id;
+    }
 
     public String getPrice() {
         return price;
@@ -83,6 +79,10 @@ public class Product implements Parcelable {
         this.img = img;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setPrice(String price) {
         this.price = price;
     }
@@ -97,15 +97,13 @@ public class Product implements Parcelable {
 
 
     static Product fromJson(Map<String,Object> json){
-        String size = json.get(SIZE).toString();
-        String price = json.get(PRICE).toString();
-        String gender = json.get(GENDER).toString();
-        String category = json.get(CATEGORY).toString();
-        Timestamp ts =  (Timestamp) json.get(TIME);
+        String size = json.get(Constants.SIZE).toString();
+        String price = json.get(Constants.PRICE).toString();
+        String gender = json.get(Constants.GENDER).toString();
+        String category = json.get(Constants.CATEGORY).toString();
+        Timestamp ts =  (Timestamp) json.get(Constants.TIME);
 
-        String id = "!@#12312312312";
-
-        Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()), id);
+        Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()));
 
         return product;
     }

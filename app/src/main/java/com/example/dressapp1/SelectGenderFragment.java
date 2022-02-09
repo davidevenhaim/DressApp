@@ -48,6 +48,8 @@ public class SelectGenderFragment extends Fragment implements View.OnClickListen
             case R.id.add_new_post_btn:
                 Navigation.findNavController(view).navigate(SelectGenderFragmentDirections.actionSelectGenderFragmentToNewPostFragment());
                 break;
+            default:
+                break;
         }
     }
 }

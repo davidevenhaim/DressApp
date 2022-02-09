@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -26,17 +27,18 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.dressapp1.model.LoadingState;
 import com.example.dressapp1.model.Model;
 import com.example.dressapp1.model.Product;
+import com.example.dressapp1.model.interfaces.OnItemClickListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ProductGridFragment extends Fragment {
+public class ProductGridFragment extends Fragment implements View.OnClickListener {
     ProductListFragmentViewModel viewModel;
     View view;
     SwipeRefreshLayout swipeRefresh;
     MyAdapter adapter;
     ProgressBar progressBar;
+    ImageButton addProdBtn;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -47,12 +49,12 @@ public class ProductGridFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_product_grid, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         progressBar = view.findViewById(R.id.product_list_progress_bar);
+        addProdBtn = view.findViewById(R.id.add_new_post_btn);
         swipeRefresh = view.findViewById(R.id.product_list_swipe_refresh);
-
+        progressBar.setVisibility(View.VISIBLE);
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -64,13 +66,16 @@ public class ProductGridFragment extends Fragment {
             }
         });
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
+        int largePadding = getResources().getDimensionPixelSize(R.dimen.product_grid_spacing);
+        int smallPadding = getResources().getDimensionPixelSize(R.dimen.product_grid_spacing_small);
         adapter = new MyAdapter();
-        recyclerView.setAdapter(adapter);
+
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new ProductGridItemDecoration(largePadding, smallPadding));
+
+        addProdBtn.setOnClickListener(this);
 
         viewModel.getData().observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
             @Override
@@ -78,36 +83,45 @@ public class ProductGridFragment extends Fragment {
                 adapter.setFragment(ProductGridFragment.this);
                 adapter.setData(products);
                 adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
             }
         });
 
-        progressBar.setVisibility(View.GONE);
-
-        adapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(int position, View v) {
                 progressBar.setVisibility(View.VISIBLE);
-                Product product = viewModel.getData().getValue().get(i);
+                Product product = viewModel.getData().getValue().get(position);
                 ProductGridFragmentDirections.ActionProductGridFragmentToProductPageFragment action =
                         ProductGridFragmentDirections.actionProductGridFragmentToProductPageFragment(product);
-                Navigation.findNavController(view).navigate(action);
-                Log.d("prod",product.getPrice());
+                Navigation.findNavController(v).navigate(action);
             }
         });
 
         swipeRefresh.setRefreshing(Model.instance.getLoadingState().getValue()== LoadingState.loading);
         Model.instance.getLoadingState().observe(getViewLifecycleOwner(), loadingState -> {
             swipeRefresh.setRefreshing(loadingState == LoadingState.loading);
-        } );
+        });
 
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.add_new_post_btn:
+                Navigation.findNavController(view).navigate(ProductGridFragmentDirections.actionProductGridFragmentToNewPostFragment());
+                break;
+            default:
+                break;
+        }
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         NetworkImageView img;
         TextView title, price;
 
-        public MyViewHolder(@NonNull View itemView, AdapterView.OnItemClickListener listener) {
+        public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             img = itemView.findViewById(R.id.grid_product_image);
             title = itemView.findViewById(R.id.grid_product_title);
@@ -115,8 +129,11 @@ public class ProductGridFragment extends Fragment {
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    Log.d("E", "123456");
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if(listener != null) {
+                    listener.onItemClick(position, v);
+                    }
                 }
             });
         }
@@ -124,7 +141,7 @@ public class ProductGridFragment extends Fragment {
         public void bind(Product product){
             title.setText(product.getCategory());
             price.setText(product.getPrice());
-            String url = product.getImg().toString();
+            String url = product.getImg();
             if (url != null){
                 Picasso.get()
                         .load(url)
@@ -135,11 +152,11 @@ public class ProductGridFragment extends Fragment {
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
-        AdapterView.OnItemClickListener listener;
+        OnItemClickListener listener;
         private List<Product> data;
         private Fragment fragment;
 
-        public void setOnItemClickListener(AdapterView.OnItemClickListener listener){
+        public void setOnItemClickListener(OnItemClickListener listener){
             this.listener = listener;
         }
 

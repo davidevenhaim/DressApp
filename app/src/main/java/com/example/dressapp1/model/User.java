@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.dressapp1.model.helpers.Constants;
 import com.google.firebase.Timestamp;
 
 import java.util.Map;
@@ -19,16 +20,6 @@ public class User {
     String email, phone, address, fullName, city;
 //    String[] products;
 //    Timestamp createdAt;
-
-    final static String ID = "id";
-    final static String ADDRESS = "address";
-    final static String CITY = "city";
-    final static String EMAIL = "email";
-    final static String FNAME = "fname";
-    final static String PHONE = "phone";
-    final static String PRODUCTS = "products";
-    final static String TIME = "timestamp";
-
 
     public User(){}
 
@@ -96,13 +87,13 @@ public class User {
 
 
     static User fromJson(Map<String,Object> json){
-        String id = json.get(ID).toString();
-        String fname =  json.get(FNAME).toString();
-        String address =  json.get(ADDRESS).toString();
-        String city =  json.get(CITY).toString();
-        String email =  json.get(EMAIL).toString();
-        String phone =  json.get(PHONE).toString();
-        String products =  json.get(PRODUCTS).toString();
+        String id = json.get(Constants.ID).toString();
+        String fname =  json.get(Constants.FNAME).toString();
+        String address =  json.get(Constants.ADDRESS).toString();
+        String city =  json.get(Constants.CITY).toString();
+        String email =  json.get(Constants.EMAIL).toString();
+        String phone =  json.get(Constants.PHONE).toString();
+        String products =  json.get(Constants.PRODUCTS).toString();
 //        Timestamp ts = (Timestamp) json.get(TIME);
 
         User user = new User(address, city, email, fname, phone, id);

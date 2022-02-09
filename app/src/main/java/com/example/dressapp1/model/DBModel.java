@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.dressapp1.model.helpers.Constants;
+import com.example.dressapp1.model.interfaces.UploadImageListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -97,6 +99,7 @@ public class DBModel {
         dbProduct.put("price", product.getPrice());
         dbProduct.put("timestamp", FieldValue.serverTimestamp());
         dbProduct.put("ownerRef", userRef);
+        dbProduct.put("img", product.getImg());
 
         DocumentReference productDocRef = db.collection("products").document();
 
@@ -196,26 +199,56 @@ public class DBModel {
 
 
     public void getAllProducts(Long since,GetAllProductsListener listener) {
-        db.collection("products").whereGreaterThanOrEqualTo(Product.TIME, new Timestamp(since, 0))
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Log.d("TIME", since.toString());
+        db.collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()) {
                     LinkedList<Product> productList = new LinkedList<Product>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Product p = Product.fromJson(document.getData());
-
+                        p.setId(document.getId());
                         if(p != null) {
                             productList.add(p);
                         }
-                    listener.onComplete(productList);
                     }
+                    listener.onComplete(productList);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 listener.onComplete(null);
+            }
+        });
+    }
+
+
+
+    public void uploadImage(Bitmap bitmap, String id_key, final UploadImageListener listener){
+        FirebaseStorage storage=FirebaseStorage.getInstance();
+        final StorageReference imageRef;
+        imageRef=storage.getReference().child(Constants.MODEL_FIRE_BASE_IMAGE_COLLECTION).child(id_key);
+
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] data = baos.toByteArray();
+        UploadTask uploadTask=imageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onComplete(null);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        listener.onComplete(uri.toString());
+                    }
+                });
             }
         });
     }

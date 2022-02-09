@@ -53,6 +53,9 @@ public class Model {
                 Product.setLocalLastUpdated(lLastUpdate);
                 List<Product> allProducts = AppLocalDB.db.productDao().getAll();
 
+                for(Product pro : allProducts) {
+                    Log.d("1", pro.getId());
+                }
                 productListLtd.postValue(allProducts);
                 //5. return all records to the caller
                 

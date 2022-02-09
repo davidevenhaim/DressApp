@@ -149,6 +149,7 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
         setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
         Product product = new Product(size, price, gender, category);
+        product.setImg(bitmap.toString());
 
         DBModel.dbInstance.uploadProduct(product, bitmap, new DBModel.UploadProductListener() {
             @Override
