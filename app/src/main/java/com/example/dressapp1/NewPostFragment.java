@@ -38,7 +38,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.dressapp1.model.DBModel;
+import com.example.dressapp1.model.Model;
 import com.example.dressapp1.model.Product;
+import com.example.dressapp1.model.interfaces.UploadProductListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -149,15 +151,13 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
         setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
         Product product = new Product(size, price, gender, category);
-        product.setImg(bitmap.toString());
-
-        DBModel.dbInstance.uploadProduct(product, bitmap, new DBModel.UploadProductListener() {
+        Model.instance.addPost(product, bitmap, new UploadProductListener() {
             @Override
-            public void onComplete(Task task, Product product1, String userId) {
-                if(task.isSuccessful()) {
-                progressBar.setVisibility(View.INVISIBLE);
+            public void onComplete(Task task, Product product, String userId) {
+                if (task.isSuccessful()) {
+                    progressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(getActivity(), "Upload successfully", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(view).navigate(NewPostFragmentDirections.actionNewPostFragmentToProductPageFragment(product));
+                    Navigation.findNavController(view).navigate(NewPostFragmentDirections.actionNewPostFragmentToProductPageFragment(product));
                 }
             }
         });

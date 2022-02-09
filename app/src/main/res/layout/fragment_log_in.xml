@@ -88,14 +88,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            >
 
             <Button
                 android:id="@+id/register_btn"
+                android:layout_marginBottom="65sp"
                 android:layout_width="250sp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginBottom="20sp"
                 android:backgroundTint="@color/black"
                 android:text="Sign-Up" />
         </RelativeLayout>

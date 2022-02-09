@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.dressapp1.model.helpers.Constants;
 import com.example.dressapp1.model.interfaces.UploadImageListener;
+import com.example.dressapp1.model.interfaces.UploadProductListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -82,60 +83,6 @@ public class DBModel {
                         Log.d("ERR", "Error creating account");
                     }
             });
-    }
-
-    public interface UploadProductListener{
-        void onComplete(Task task, Product product, String userId);
-    }
-
-    public void uploadProduct(Product product, Bitmap bitmap, UploadProductListener listener) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DocumentReference userRef = db.collection("users").document(user.getUid());
-
-        Map<String, Object> dbProduct = new HashMap<>();
-        dbProduct.put("category", product.getCategory());
-        dbProduct.put("size", product.getSize());
-        dbProduct.put("gender", product.getGender());
-        dbProduct.put("price", product.getPrice());
-        dbProduct.put("timestamp", FieldValue.serverTimestamp());
-        dbProduct.put("ownerRef", userRef);
-        dbProduct.put("img", product.getImg());
-
-        DocumentReference productDocRef = db.collection("products").document();
-
-        productDocRef.set(dbProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                DocumentReference userRef = db.collection("users").document(user.getUid());
-                userRef.update("products", FieldValue.arrayUnion(productDocRef)).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(@NonNull Void unused) {
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-
-                        StorageReference storageRef = storage.getReference();
-                        StorageReference imageRef = storageRef.child("images/" + productDocRef.getId() + ".jpg");
-
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                        byte[] data = baos.toByteArray();
-
-                        UploadTask uploadTask = imageRef.putBytes(data);
-                        uploadTask.addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl()
-                                        .addOnSuccessListener(uri -> {
-                                            Uri downloadUrl = uri;
-                                            getProduct(productDocRef.getId(), new GetProductListener() {
-                                                @Override
-                                                public void onComplete(Product product) {
-                                                    listener.onComplete(task, product, user.getUid());
-                                                }
-                                            });
-                                        }));
-                    }
-                });
-
-            }
-        });
-
     }
 
     public interface GetUserByIdListener{
@@ -223,17 +170,66 @@ public class DBModel {
         });
     }
 
+    public void uploadProduct(Product product, Bitmap bitmap, UploadProductListener listener) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DocumentReference userRef = db.collection("users").document(user.getUid());
 
+        Map<String, Object> dbProduct = new HashMap<>();
 
-    public void uploadImage(Bitmap bitmap, String id_key, final UploadImageListener listener){
+        DocumentReference productDocRef = db.collection("products").document();
+
+        productDocRef.set(dbProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                DocumentReference userRef = db.collection("users").document(user.getUid());
+                userRef.update("products", FieldValue.arrayUnion(productDocRef)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(@NonNull Void unused) {
+                        uploadImage(bitmap, productDocRef.getId(), url -> {
+                            Log.d("IMG", url);
+                            if(url != null) {
+                                dbProduct.put("img", url);
+                                dbProduct.put("category", product.getCategory());
+                                dbProduct.put("size", product.getSize());
+                                dbProduct.put("gender", product.getGender());
+                                dbProduct.put("price", product.getPrice());
+                                dbProduct.put("timestamp", FieldValue.serverTimestamp());
+                                dbProduct.put("ownerRef", userRef);
+                                productDocRef.set(dbProduct).addOnCompleteListener(task1 -> {
+                                            product.setImg(url);
+                                            listener.onComplete(task1, product, user.getUid());
+                                        });
+                            } else {
+                                listener.onComplete(task, new Product(), user.getUid());
+                            }
+                        });
+
+//                        UploadTask uploadTask = imageRef.putBytes(data);
+//                        uploadTask.addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl()
+//                                        .addOnSuccessListener(uri -> {
+//                                            Uri downloadUrl = uri;
+//                                            getProduct(productDocRef.getId(), new GetProductListener() {
+//                                                @Override
+//                                                public void onComplete(Product product) {
+//                                                    listener.onComplete(task, product, user.getUid());
+//                                                }
+//                                            });
+//                                        }));
+                    }
+                });
+
+            }
+        });
+
+    }
+
+    public void uploadImage(Bitmap bitmap, String docId, final UploadImageListener listener) {
         FirebaseStorage storage=FirebaseStorage.getInstance();
         final StorageReference imageRef;
-        imageRef=storage.getReference().child(Constants.MODEL_FIRE_BASE_IMAGE_COLLECTION).child(id_key);
-
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imageRef=storage.getReference().child(Constants.MODEL_FIRE_BASE_IMAGE_COLLECTION).child(docId);
+        ByteArrayOutputStream baos =new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
-        byte[] data = baos.toByteArray();
+        byte[] data= baos.toByteArray();
         UploadTask uploadTask=imageRef.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override

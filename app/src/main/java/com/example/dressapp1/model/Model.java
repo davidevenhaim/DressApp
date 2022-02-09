@@ -1,11 +1,15 @@
 package com.example.dressapp1.model;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.dressapp1.MyApplication;
+import com.example.dressapp1.model.interfaces.UploadImageListener;
+import com.example.dressapp1.model.interfaces.UploadProductListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.List;
 
@@ -52,16 +56,26 @@ public class Model {
                 }
                 Product.setLocalLastUpdated(lLastUpdate);
                 List<Product> allProducts = AppLocalDB.db.productDao().getAll();
-
-                for(Product pro : allProducts) {
-                    Log.d("1", pro.getId());
-                }
                 productListLtd.postValue(allProducts);
                 //5. return all records to the caller
                 
                 loadingState.postValue(LoadingState.loaded);
             });
 
+            }
+        });
+    }
+
+    public void uploadImage(Bitmap bitmap, String name, final UploadImageListener listener){
+        fbModel.uploadImage(bitmap,name,listener);
+    }
+
+    public void addPost(Product product, Bitmap bitmap, UploadProductListener listener){
+        fbModel.uploadProduct(product, bitmap, new UploadProductListener() {
+            @Override
+            public void onComplete(Task task, Product product, String userId) {
+            reloadProductList();
+            listener.onComplete(task, product, userId);
             }
         });
     }

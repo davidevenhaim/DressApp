@@ -14,6 +14,7 @@ public class Constants {
     public final static String FNAME = "fname";
     public final static String PHONE = "phone";
     public final static String PRODUCTS = "products";
+    public final static String IMG = "img";
 
     public final static String MODEL_FIRE_BASE_IMAGE_COLLECTION = "product_images";
 

@@ -6,13 +6,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ProductPageFragment">
 
-    <include layout="@layout/top_bar_nav" android:id="@+id/top_bar" />
+    <include
+        layout="@layout/top_bar_nav"
+        android:id="@+id/top_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginTop="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <ImageView
         android:id="@+id/product_preview"
         android:layout_width="300dp"
         android:layout_height="400dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_bar"
@@ -50,7 +59,7 @@
         android:layout_marginTop="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/favorite_frame"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
         >
 
         <FrameLayout android:id="@+id/profile_frame"
@@ -141,6 +150,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="35sp"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

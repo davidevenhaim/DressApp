@@ -101,10 +101,11 @@ public class Product implements Parcelable {
         String price = json.get(Constants.PRICE).toString();
         String gender = json.get(Constants.GENDER).toString();
         String category = json.get(Constants.CATEGORY).toString();
+        String img = json.get(Constants.IMG).toString();
         Timestamp ts =  (Timestamp) json.get(Constants.TIME);
 
         Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()));
-
+        product.setImg(img);
         return product;
     }
 

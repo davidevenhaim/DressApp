@@ -56,23 +56,15 @@ public class ProductPageFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        if(productId != null) {
-            DBModel.dbInstance.getProduct(productId, new DBModel.GetProductListener() {
-                @Override
-                public void onComplete(Product product) {
-                    if(product != null) {
-                        curProduct = product;
-                        priceText.setText(curProduct.getPrice());
-                        sizeText.setText(curProduct.getSize());
-                        String url = curProduct.getImg().toString();
-                        if(!url.isEmpty()) {
-                            Picasso.get().load(url).into(productImg);
-                        }
-                    }
-                    progressBar.setVisibility(View.INVISIBLE);
-                }
-            });
+        priceText.setText(curProduct.getPrice());
+        sizeText.setText(curProduct.getSize());
+        String url = curProduct.getImg() + "";
+        if(!url.isEmpty()) {
+            Picasso.get().load(url).into(productImg);
         }
+        Log.d("PRODUCT", curProduct.getSize());
+
+        progressBar.setVisibility(View.INVISIBLE);
 
         return view;
     }
