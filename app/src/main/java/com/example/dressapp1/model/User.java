@@ -2,14 +2,23 @@ package com.example.dressapp1.model;
 
 import android.widget.ArrayAdapter;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.firebase.Timestamp;
 
 import java.util.Map;
 
+@Entity
 public class User {
-    String email, phone, address, fullName, city, id;
-    String[] products;
-    Timestamp createdAt;
+    @PrimaryKey
+    @NonNull
+    String id;
+
+    String email, phone, address, fullName, city;
+//    String[] products;
+//    Timestamp createdAt;
 
     final static String ID = "id";
     final static String ADDRESS = "address";
@@ -31,14 +40,14 @@ public class User {
         this.city = city;
     }
 
-    public User(String address, String city, String email, String fullName, String phone, String id, Timestamp ts ){
+    public User(String address, String city, String email, String fullName, String phone, String id ){
         this.email = email;
         this.phone = phone;
         this.address = address;
         this.fullName = fullName;
         this.city = city;
         this.id = id;
-        this.createdAt = ts;
+//        this.createdAt = ts;
     }
 
     public String getAddress() {
@@ -53,9 +62,9 @@ public class User {
         return email;
     }
 
-    public String[] getProducts() {
-        return products;
-    }
+//    public String[] getProducts() {
+//        return products;
+//    }
 
     public String getFullName() {
         return fullName;
@@ -94,9 +103,9 @@ public class User {
         String email =  json.get(EMAIL).toString();
         String phone =  json.get(PHONE).toString();
         String products =  json.get(PRODUCTS).toString();
-        Timestamp ts = (Timestamp) json.get(TIME);
+//        Timestamp ts = (Timestamp) json.get(TIME);
 
-        User user = new User(address, city, email, fname, phone, id, ts);
+        User user = new User(address, city, email, fname, phone, id);
 
         return user;
     }

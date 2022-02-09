@@ -92,13 +92,8 @@
         android:label="fragment_product_page"
         tools:layout="@layout/fragment_product_page" >
         <argument
-            android:name="productId"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="ownerId"
-            app:argType="string"
-            app:nullable="true" />
+            android:name="product"
+            app:argType="com.example.dressapp1.model.Product" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"

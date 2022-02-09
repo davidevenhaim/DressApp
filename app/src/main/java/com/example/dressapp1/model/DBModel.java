@@ -69,7 +69,7 @@ public class DBModel {
                         dbUser.put("address", user.getAddress());
                         dbUser.put("fname", user.getFullName());
                         dbUser.put("city", user.getCity());
-                        dbUser.put("products", user.getProducts());
+//                        dbUser.put("products", user.getProducts());
                         dbUser.put("timestamp", FieldValue.serverTimestamp());
 
                         documentReference.set(dbUser).addOnCompleteListener(task1 -> {
@@ -83,7 +83,7 @@ public class DBModel {
     }
 
     public interface UploadProductListener{
-        void onComplete(Task task, String productId, String userId);
+        void onComplete(Task task, Product product, String userId);
     }
 
     public void uploadProduct(Product product, Bitmap bitmap, UploadProductListener listener) {
@@ -120,7 +120,12 @@ public class DBModel {
                         uploadTask.addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl()
                                         .addOnSuccessListener(uri -> {
                                             Uri downloadUrl = uri;
-                                            listener.onComplete(task, productDocRef.getId(), user.getUid());
+                                            getProduct(productDocRef.getId(), new GetProductListener() {
+                                                @Override
+                                                public void onComplete(Product product) {
+                                                    listener.onComplete(task, product, user.getUid());
+                                                }
+                                            });
                                         }));
                     }
                 });
@@ -169,7 +174,7 @@ public class DBModel {
                         if(document.exists()) {
                             Product product = Product.fromJson(document.getData());
                             Log.d("product", product.getCategory() + product.getGender() + product.getPrice());
-                            product.setImg(task.getResult());
+                            product.setImg(task.getResult().toString());
                             listener.onComplete(product);
                         }else {
                             listener.onComplete(null);

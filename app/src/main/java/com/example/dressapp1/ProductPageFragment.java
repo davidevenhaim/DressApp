@@ -35,8 +35,7 @@ public class ProductPageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        productId = ProductPageFragmentArgs.fromBundle(getArguments()).getProductId();
-        curProduct = new Product();
+        curProduct = ProductPageFragmentArgs.fromBundle(getArguments()).getProduct();
         owner = new User();
     }
 

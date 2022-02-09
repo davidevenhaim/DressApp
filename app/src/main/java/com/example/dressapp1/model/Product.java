@@ -3,7 +3,13 @@ package com.example.dressapp1.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.example.dressapp1.MainActivity;
 import com.example.dressapp1.MyApplication;
@@ -12,9 +18,13 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.Map;
 
-public class Product {
-    String size, price, gender, category;
-    Uri img;
+@Entity
+public class Product implements Parcelable {
+    @PrimaryKey
+    @NonNull
+    String id;
+
+    String size, price, gender, category, img;
     Long updatedAt;
 
     final static String ID = "id";
@@ -34,19 +44,20 @@ public class Product {
         this.category = category;
     }
 
-    public Product(String size, String price, String gender, String category, Long lastU) {
+    public Product(String size, String price, String gender, String category, Long lastU, String id) {
         this.size = size;
         this.price = price;
         this.gender = gender;
         this.category = category;
         this.updatedAt = lastU;
+        this.id = id;
     }
 
     public String getSize() {
         return size;
     }
 
-    public Uri getImg() {return img;}
+    public String getImg() {return img;}
 
     public String getPrice() {
         return price;
@@ -68,7 +79,7 @@ public class Product {
         this.size = size;
     }
 
-    public void setImg(Uri img) {
+    public void setImg(String img) {
         this.img = img;
     }
 
@@ -92,7 +103,9 @@ public class Product {
         String category = json.get(CATEGORY).toString();
         Timestamp ts =  (Timestamp) json.get(TIME);
 
-        Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()));
+        String id = "!@#12312312312";
+
+        Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()), id);
 
         return product;
     }
@@ -111,7 +124,27 @@ public class Product {
         Log.d("TAG", "new lud " + date);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(size);
+        parcel.writeString(price);
+        parcel.writeString(gender);
+        parcel.writeString(category);
+        parcel.writeString(img);
 
+//        parcel.writeByte((byte) (isDeleted ? 1 : 0));
+//        if (lastUpdated == null) {
+//            parcel.writeByte((byte) 0);
+//        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(updatedAt);
 
+//        }
+        }
 }

@@ -11,16 +11,7 @@ import java.util.List;
 
 public class ProductListFragmentViewModel extends ViewModel {
 
-    LiveData<List<Product>> data;
-
-//    ProductListFragmentViewModel() {ProductListFragmentViewModel
-//        DBModel.dbInstance.getAllProducts(new DBModel.GetAllProductsListener() {
-//            @Override
-//            public void onComplete() {
-////                data
-//            }
-//        });
-//    }
+    LiveData<List<Product>> data = Model.instance.getAll();
 
     public LiveData<List<Product>> getData() {
         return data;

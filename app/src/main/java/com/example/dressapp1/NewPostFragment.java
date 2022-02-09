@@ -152,11 +152,11 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
 
         DBModel.dbInstance.uploadProduct(product, bitmap, new DBModel.UploadProductListener() {
             @Override
-            public void onComplete(Task task, String productId, String userId) {
+            public void onComplete(Task task, Product product1, String userId) {
                 if(task.isSuccessful()) {
                 progressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(getActivity(), "Upload successfully", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(view).navigate(NewPostFragmentDirections.actionNewPostFragmentToProductPageFragment(productId, userId));
+                Navigation.findNavController(view).navigate(NewPostFragmentDirections.actionNewPostFragmentToProductPageFragment(product));
                 }
             }
         });
