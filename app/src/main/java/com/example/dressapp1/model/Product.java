@@ -23,10 +23,10 @@ import java.util.Map;
 public class Product implements Parcelable {
     @PrimaryKey
     @NonNull
-    String id;
-
-    String size, price, gender, category, img;
-    Long updatedAt;
+    private String id;
+    private String size, price, gender, category, img;
+    private Long lastUpdated;
+    private boolean isDeleted;
 
     public Product(){}
 
@@ -42,7 +42,7 @@ public class Product implements Parcelable {
         this.price = price;
         this.gender = gender;
         this.category = category;
-        this.updatedAt = lastU;
+        this.lastUpdated = lastU;
     }
 
     public String getSize() {
@@ -67,8 +67,12 @@ public class Product implements Parcelable {
         return category;
     }
 
-    public long getLastUpdated() {
-        return updatedAt;
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public Long getLastUpdated() {
+        return lastUpdated;
     }
 
     public void setSize(String size) {
@@ -95,6 +99,13 @@ public class Product implements Parcelable {
         this.category = category;
     }
 
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public void setLastUpdated(Long lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
 
     static Product fromJson(Map<String,Object> json){
         String size = json.get(Constants.SIZE).toString();
@@ -110,17 +121,17 @@ public class Product implements Parcelable {
     }
 
     static Long getLocalLastUpdated(){
-        Long localLastUpdate = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE)
-                .getLong("STUDENTS_LAST_UPDATE",0);
+        Long localLastUpdate = MyApplication.getContext().getSharedPreferences(Constants.TAG, Context.MODE_PRIVATE)
+                .getLong(Constants.PRODUCT_LAST_UPDATE,0);
         return localLastUpdate;
     }
 
     static void setLocalLastUpdated(Long date){
         SharedPreferences.Editor editor = MyApplication.getContext()
-                .getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
-        editor.putLong("STUDENTS_LAST_UPDATE",date);
+                .getSharedPreferences(Constants.TAG, Context.MODE_PRIVATE).edit();
+        editor.putLong(Constants.PRODUCT_LAST_UPDATE,date);
         editor.commit();
-        Log.d("TAG", "new lud " + date);
+        Log.d(Constants.TAG, "new lud " + date);
     }
 
     @Override
@@ -128,6 +139,17 @@ public class Product implements Parcelable {
         return 0;
     }
 
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(id);
@@ -136,14 +158,29 @@ public class Product implements Parcelable {
         parcel.writeString(gender);
         parcel.writeString(category);
         parcel.writeString(img);
+        parcel.writeByte((byte) (isDeleted ? 1 : 0));
 
-//        parcel.writeByte((byte) (isDeleted ? 1 : 0));
-//        if (lastUpdated == null) {
-//            parcel.writeByte((byte) 0);
-//        } else {
+        if (lastUpdated == null) {
+            parcel.writeByte((byte) 0);
+        } else {
             parcel.writeByte((byte) 1);
-            parcel.writeLong(updatedAt);
-
-//        }
+            parcel.writeLong(lastUpdated);
+            }
         }
+
+    protected Product(Parcel in) {
+        id = in.readString();
+        size = in.readString();
+        price = in.readString();
+        gender = in.readString();
+        category = in.readString();
+        img = in.readString();
+        isDeleted = in.readByte() != 0;
+
+        if (in.readByte() == 0) {
+            lastUpdated = null;
+        } else {
+            lastUpdated = in.readLong();
+        }
+    }
 }

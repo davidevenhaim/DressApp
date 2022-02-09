@@ -14,10 +14,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.dressapp1.model.DBModel;
 import com.example.dressapp1.model.Product;
 import com.example.dressapp1.model.User;
-import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
 
 public class ProductPageFragment extends Fragment {

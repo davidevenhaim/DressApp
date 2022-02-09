@@ -37,19 +37,10 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.dressapp1.model.DBModel;
 import com.example.dressapp1.model.Model;
 import com.example.dressapp1.model.Product;
 import com.example.dressapp1.model.interfaces.UploadProductListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 public class NewPostFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -182,8 +173,6 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
     public void onItemSelected(AdapterView<?> adapterView, View v, int i, long l) {
         String selected = "";
         selected = adapterView.getItemAtPosition(i).toString();
-        Log.d("Tag", selected);
-        Log.d("ID", v.getId() + "");
     }
 
     @Override

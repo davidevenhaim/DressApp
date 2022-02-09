@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -118,7 +119,7 @@ public class ProductGridFragment extends Fragment implements View.OnClickListene
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        NetworkImageView img;
+        ImageView img;
         TextView title, price;
 
         public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) {
@@ -140,13 +141,10 @@ public class ProductGridFragment extends Fragment implements View.OnClickListene
 
         public void bind(Product product){
             title.setText(product.getCategory());
-            price.setText(product.getPrice());
+            price.setText(product.getPrice() + "$");
             String url = product.getImg();
             if (url != null){
-                Picasso.get()
-                        .load(url)
-                        .placeholder(R.drawable.logo)
-                        .into(img);
+                Picasso.get().load(url).into(img);
             }
         }
     }

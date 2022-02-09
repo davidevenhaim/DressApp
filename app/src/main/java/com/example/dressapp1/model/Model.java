@@ -49,10 +49,15 @@ public class Model {
                 Long lLastUpdate = new Long(0);
 
                 for(Product product : list){
-                    AppLocalDB.db.productDao().insertAll(product);
-                    if (product.getLastUpdated() > lLastUpdate){
-                        lLastUpdate = product.getLastUpdated();
-                    }
+                        if(!product.isDeleted()) {
+                            AppLocalDB.db.productDao().insertAll(product);
+                        }
+                        else {
+                            AppLocalDB.db.productDao().delete(product);
+                        }
+                        if (product.getLastUpdated() > lLastUpdate){
+                            lLastUpdate = product.getLastUpdated();
+                        }
                 }
                 Product.setLocalLastUpdated(lLastUpdate);
                 List<Product> allProducts = AppLocalDB.db.productDao().getAll();

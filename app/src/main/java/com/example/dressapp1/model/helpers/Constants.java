@@ -15,7 +15,12 @@ public class Constants {
     public final static String PHONE = "phone";
     public final static String PRODUCTS = "products";
     public final static String IMG = "img";
+    public final static String USERS = "users";
+    public final static String TAG = "TAG";
+
 
     public final static String MODEL_FIRE_BASE_IMAGE_COLLECTION = "product_images";
+    public final static String PRODUCT_LAST_UPDATE = "PRODUCT_LAST_UPDATE";
+
 
 }

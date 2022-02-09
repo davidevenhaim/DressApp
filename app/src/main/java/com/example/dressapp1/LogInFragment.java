@@ -19,7 +19,6 @@ import com.example.dressapp1.model.DBModel;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LogInFragment extends Fragment implements View.OnClickListener {

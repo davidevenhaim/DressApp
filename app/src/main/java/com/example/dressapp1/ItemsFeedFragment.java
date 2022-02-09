@@ -9,9 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.dressapp1.model.DBModel;
-import com.example.dressapp1.model.Product;
-
 public class ItemsFeedFragment extends Fragment {
     View view;
     SwipeRefreshLayout swipeRefresh;

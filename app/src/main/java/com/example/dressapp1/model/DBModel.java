@@ -67,13 +67,13 @@ public class DBModel {
                         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         DocumentReference documentReference = db.collection("users").document(userId);
                         Map<String, Object> dbUser = new HashMap<>();
-                        dbUser.put("email", user.getEmail());
-                        dbUser.put("phone", user.getPhone());
-                        dbUser.put("address", user.getAddress());
-                        dbUser.put("fname", user.getFullName());
-                        dbUser.put("city", user.getCity());
+                        dbUser.put(Constants.EMAIL, user.getEmail());
+                        dbUser.put(Constants.PHONE, user.getPhone());
+                        dbUser.put(Constants.ADDRESS , user.getAddress());
+                        dbUser.put(Constants.FNAME, user.getFullName());
+                        dbUser.put(Constants.CITY , user.getCity());
+                        dbUser.put(Constants.TIME , FieldValue.serverTimestamp());
 //                        dbUser.put("products", user.getProducts());
-                        dbUser.put("timestamp", FieldValue.serverTimestamp());
 
                         documentReference.set(dbUser).addOnCompleteListener(task1 -> {
                             FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -96,11 +96,11 @@ public class DBModel {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot snap = task.getResult();
                 User user = new User();
-                user.setAddress(snap.get("address").toString());
-                user.setCity(snap.get("city").toString());
-                user.setEmail(snap.get("email").toString());
-                user.setFullName(snap.get("fname").toString());
-                user.setPhone(snap.get("phone").toString());
+                user.setAddress(snap.get(Constants.ADDRESS).toString());
+                user.setCity(snap.get(Constants.CITY).toString());
+                user.setEmail(snap.get(Constants.EMAIL).toString());
+                user.setFullName(snap.get(Constants.FNAME).toString());
+                user.setPhone(snap.get(Constants.PHONE).toString());
                 listener.onComplete(task, user);
             }
         });
@@ -111,7 +111,7 @@ public class DBModel {
     }
 
     public void getProduct(String productId, GetProductListener listener ) {
-        DocumentReference productDocRef = db.collection("products").document(productId);
+        DocumentReference productDocRef = db.collection(Constants.PRODUCTS).document(productId);
         productDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -147,7 +147,7 @@ public class DBModel {
 
     public void getAllProducts(Long since,GetAllProductsListener listener) {
         Log.d("TIME", since.toString());
-        db.collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection(Constants.PRODUCTS).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()) {
@@ -172,29 +172,28 @@ public class DBModel {
 
     public void uploadProduct(Product product, Bitmap bitmap, UploadProductListener listener) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DocumentReference userRef = db.collection("users").document(user.getUid());
+        DocumentReference userRef = db.collection(Constants.USERS).document(user.getUid());
 
         Map<String, Object> dbProduct = new HashMap<>();
 
-        DocumentReference productDocRef = db.collection("products").document();
+        DocumentReference productDocRef = db.collection(Constants.PRODUCTS).document();
 
         productDocRef.set(dbProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                DocumentReference userRef = db.collection("users").document(user.getUid());
-                userRef.update("products", FieldValue.arrayUnion(productDocRef)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                DocumentReference userRef = db.collection(Constants.USERS).document(user.getUid());
+                userRef.update( Constants.PRODUCTS, FieldValue.arrayUnion(productDocRef)).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(@NonNull Void unused) {
                         uploadImage(bitmap, productDocRef.getId(), url -> {
-                            Log.d("IMG", url);
                             if(url != null) {
-                                dbProduct.put("img", url);
-                                dbProduct.put("category", product.getCategory());
-                                dbProduct.put("size", product.getSize());
-                                dbProduct.put("gender", product.getGender());
-                                dbProduct.put("price", product.getPrice());
-                                dbProduct.put("timestamp", FieldValue.serverTimestamp());
-                                dbProduct.put("ownerRef", userRef);
+                                dbProduct.put(Constants.IMG, url);
+                                dbProduct.put(Constants.CATEGORY, product.getCategory());
+                                dbProduct.put(Constants.SIZE, product.getSize());
+                                dbProduct.put(Constants.GENDER, product.getGender());
+                                dbProduct.put(Constants.PRICE, product.getPrice());
+                                dbProduct.put(Constants.TIME, FieldValue.serverTimestamp());
+                                dbProduct.put(Constants.OWNER, userRef);
                                 productDocRef.set(dbProduct).addOnCompleteListener(task1 -> {
                                             product.setImg(url);
                                             listener.onComplete(task1, product, user.getUid());
@@ -203,18 +202,6 @@ public class DBModel {
                                 listener.onComplete(task, new Product(), user.getUid());
                             }
                         });
-
-//                        UploadTask uploadTask = imageRef.putBytes(data);
-//                        uploadTask.addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl()
-//                                        .addOnSuccessListener(uri -> {
-//                                            Uri downloadUrl = uri;
-//                                            getProduct(productDocRef.getId(), new GetProductListener() {
-//                                                @Override
-//                                                public void onComplete(Product product) {
-//                                                    listener.onComplete(task, product, user.getUid());
-//                                                }
-//                                            });
-//                                        }));
                     }
                 });
 
