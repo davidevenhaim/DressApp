@@ -85,27 +85,6 @@ public class DBModel {
             });
     }
 
-    public interface GetUserByIdListener{
-        void onComplete(Task task, User user);
-    }
-
-    public void getUserById(String userId, GetUserByIdListener listener) {
-        DocumentReference userDocRef = db.collection("users").document(userId);
-        userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot snap = task.getResult();
-                User user = new User();
-                user.setAddress(snap.get(Constants.ADDRESS).toString());
-                user.setCity(snap.get(Constants.CITY).toString());
-                user.setEmail(snap.get(Constants.EMAIL).toString());
-                user.setFullName(snap.get(Constants.FNAME).toString());
-                user.setPhone(snap.get(Constants.PHONE).toString());
-                listener.onComplete(task, user);
-            }
-        });
-    }
-
     public interface GetProductListener{
         void onComplete(Product product);
     }
@@ -154,7 +133,7 @@ public class DBModel {
                     LinkedList<Product> productList = new LinkedList<Product>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Product p = Product.fromJson(document.getData());
-                        p.setId(document.getId());
+//                        p.setId(document.getId());
                         if(p != null) {
                             productList.add(p);
                         }
@@ -211,13 +190,15 @@ public class DBModel {
     }
 
     public void uploadImage(Bitmap bitmap, String docId, final UploadImageListener listener) {
-        FirebaseStorage storage=FirebaseStorage.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference imageRef;
-        imageRef=storage.getReference().child(Constants.MODEL_FIRE_BASE_IMAGE_COLLECTION).child(docId);
-        ByteArrayOutputStream baos =new ByteArrayOutputStream();
+
+        imageRef = storage.getReference().child(Constants.MODEL_FIRE_BASE_IMAGE_COLLECTION).child(docId);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
-        byte[] data= baos.toByteArray();
+        byte[] data = baos.toByteArray();
         UploadTask uploadTask=imageRef.putBytes(data);
+
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {

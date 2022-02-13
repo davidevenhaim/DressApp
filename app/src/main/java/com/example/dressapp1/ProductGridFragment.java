@@ -133,7 +133,7 @@ public class ProductGridFragment extends Fragment implements View.OnClickListene
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if(listener != null) {
-                    listener.onItemClick(position, v);
+                        listener.onItemClick(position, v);
                     }
                 }
             });

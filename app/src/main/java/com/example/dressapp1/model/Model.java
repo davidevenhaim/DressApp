@@ -18,6 +18,8 @@ import java.util.List;
 public class Model {
     public static final Model instance = new Model();
     DBModel fbModel = new DBModel();
+    MutableLiveData<LoadingState> loadingState= new MutableLiveData<LoadingState>();
+    MutableLiveData<List<Product>> productListLtd = new MutableLiveData<List<Product>>();
 
     private Model(){
         loadingState.setValue(LoadingState.loaded);
@@ -27,9 +29,6 @@ public class Model {
     public interface GetAllProductsListener {
         void onComplete(List<Product> data);
     }
-
-    MutableLiveData<LoadingState> loadingState= new MutableLiveData<LoadingState>();
-    MutableLiveData<List<Product>> productListLtd = new MutableLiveData<List<Product>>();
 
     public LiveData<LoadingState> getLoadingState() {
         return loadingState;
@@ -41,7 +40,7 @@ public class Model {
 
     public void reloadProductList() {
         Long localLastUpdate = Product.getLocalLastUpdated();
-        Log.d("TAG","localLastUpdate: " + localLastUpdate);
+        loadingState.setValue(LoadingState.loading);
 
         fbModel.getAllProducts(localLastUpdate,(list)-> {
             if(list != null) {
