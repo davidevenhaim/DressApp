@@ -61,8 +61,7 @@ public class Model {
                 Product.setLocalLastUpdated(lLastUpdate);
                 List<Product> allProducts = AppLocalDB.db.productDao().getAll();
                 productListLtd.postValue(allProducts);
-                //5. return all records to the caller
-                
+
                 loadingState.postValue(LoadingState.loaded);
             });
 
@@ -75,6 +74,7 @@ public class Model {
     }
 
     public void addPost(Product product, Bitmap bitmap, UploadProductListener listener){
+        Log.d("PRODUCT", product.getCategory());
         fbModel.uploadProduct(product, bitmap, new UploadProductListener() {
             @Override
             public void onComplete(Task task, Product product, String userId) {

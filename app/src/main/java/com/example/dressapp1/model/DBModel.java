@@ -133,7 +133,7 @@ public class DBModel {
                     LinkedList<Product> productList = new LinkedList<Product>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Product p = Product.fromJson(document.getData());
-//                        p.setId(document.getId());
+                        p.setId(document.getId());
                         if(p != null) {
                             productList.add(p);
                         }

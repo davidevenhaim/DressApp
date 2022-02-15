@@ -19,7 +19,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+//            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -79,8 +79,6 @@ dependencies {
     api 'com.google.android.material:material:1.1.0-alpha06'
 
     annotationProcessor 'androidx.room:room-compiler:2.3.0'
-
-
 
 }
 apply plugin: "com.google.gms.google-services"

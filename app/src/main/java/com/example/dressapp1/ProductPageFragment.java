@@ -27,7 +27,6 @@ public class ProductPageFragment extends Fragment {
     ImageView productImg, userAvatar;
     Button callBtn, mapBtn;
     TextView priceText, sizeText;
-    ImageButton favoriteImgBtn;
     ProgressBar progressBar;
 
     @Override
@@ -49,20 +48,14 @@ public class ProductPageFragment extends Fragment {
         mapBtn = view.findViewById(R.id.product_map);
         priceText = view.findViewById(R.id.product_price);
         sizeText = view.findViewById(R.id.product_size);
-        favoriteImgBtn = view.findViewById(R.id.favorite_btn);
         progressBar = view.findViewById(R.id.product_progress);
-
-        progressBar.setVisibility(View.VISIBLE);
 
         priceText.setText(curProduct.getPrice());
         sizeText.setText(curProduct.getSize());
-        String url = curProduct.getImg() + "";
-        if(!url.isEmpty()) {
-            Picasso.get().load(url).into(productImg);
-        }
-        Log.d("PRODUCT", curProduct.getSize());
 
-        progressBar.setVisibility(View.INVISIBLE);
+        if(curProduct.getImg() != null) {
+            Picasso.get().load(curProduct.getImg()).into(productImg);
+        }
 
         return view;
     }

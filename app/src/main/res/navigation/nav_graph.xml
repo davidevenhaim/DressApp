@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/selectGenderFragment">
+    app:startDestination="@id/logInFragment">
 
     <fragment
         android:id="@+id/logInFragment"
@@ -36,9 +36,6 @@
         android:label="fragment_select_gender"
         tools:layout="@layout/fragment_select_gender" >
         <action
-            android:id="@+id/action_selectGenderFragment_to_itemsFeedFragment"
-            app:destination="@id/itemsFeedFragment" />
-        <action
             android:id="@+id/action_selectGenderFragment_to_newPostFragment"
             app:destination="@id/newPostFragment" />
         <action
@@ -53,29 +50,6 @@
         <action
             android:id="@+id/action_selectGenderFragment_to_productGridFragment2"
             app:destination="@id/productGridFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/itemFragment"
-        android:name="com.example.dressapp1.ItemFragment"
-        android:label="fragment_item"
-        tools:layout="@layout/fragment_item" />
-    <fragment
-        android:id="@+id/itemsFeedFragment"
-        android:name="com.example.dressapp1.ItemsFeedFragment"
-        android:label="fragment_items_feed"
-        tools:layout="@layout/fragment_items_feed" >
-        <action
-            android:id="@+id/action_itemsFeedFragment_to_newPostFragment"
-            app:destination="@id/newPostFragment" />
-        <action
-            android:id="@+id/action_itemsFeedFragment_to_productPageFragment"
-            app:destination="@id/productPageFragment" />
-        <action
-            android:id="@+id/action_itemsFeedFragment_to_myProfileFragment"
-            app:destination="@id/myProfileFragment" />
-        <argument
-            android:name="isMan"
-            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"

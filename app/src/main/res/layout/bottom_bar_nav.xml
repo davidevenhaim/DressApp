@@ -29,15 +29,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/search"
-
-            />
-        <ImageButton
-            android:background="@color/cardview_shadow_end_color"
-            android:id="@+id/bottom_bar_fav"
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/favorite"
             />
 
         <ImageButton
