@@ -173,6 +173,9 @@ public class DBModel {
                                 dbProduct.put(Constants.PRICE, product.getPrice());
                                 dbProduct.put(Constants.TIME, FieldValue.serverTimestamp());
                                 dbProduct.put(Constants.OWNER, userRef);
+                                dbProduct.put(Constants.LANG, product.getLang());
+                                dbProduct.put(Constants.LANT, product.getLant());
+
                                 productDocRef.set(dbProduct).addOnCompleteListener(task1 -> {
                                             product.setImg(url);
                                             listener.onComplete(task1, product, user.getUid());
@@ -186,7 +189,6 @@ public class DBModel {
 
             }
         });
-
     }
 
     public void uploadImage(Bitmap bitmap, String docId, final UploadImageListener listener) {

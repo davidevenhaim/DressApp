@@ -29,6 +29,7 @@ import com.example.dressapp1.model.LoadingState;
 import com.example.dressapp1.model.Model;
 import com.example.dressapp1.model.Product;
 import com.example.dressapp1.model.interfaces.OnItemClickListener;
+import com.example.dressapp1.model.recycler.MyAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -118,7 +119,7 @@ public class ProductGridFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    /*class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView img;
         TextView title, price;
 
@@ -128,13 +129,10 @@ public class ProductGridFragment extends Fragment implements View.OnClickListene
             title = itemView.findViewById(R.id.grid_product_title);
             price = itemView.findViewById(R.id.grid_product_price);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if(listener != null) {
-                        listener.onItemClick(position, v);
-                    }
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if(listener != null) {
+                    listener.onItemClick(position, v);
                 }
             });
         }
@@ -143,7 +141,7 @@ public class ProductGridFragment extends Fragment implements View.OnClickListene
             title.setText(product.getCategory());
             price.setText(product.getPrice() + "$");
             String url = product.getImg();
-            if (url != null){
+//            if (url != null) {
                 Picasso.get().load(url).into(img);
             }
         }
@@ -185,6 +183,6 @@ public class ProductGridFragment extends Fragment implements View.OnClickListene
             if (viewModel.getData().getValue() == null) return 0;
             return viewModel.getData().getValue().size();
         }
-    }
+    }*/
 
 }

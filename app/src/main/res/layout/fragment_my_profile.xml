@@ -1,9 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MyProfileFragment">
 
+    <include
+        layout="@layout/top_bar_nav"
+        android:id="@+id/top_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginTop="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
-</FrameLayout>
+
+    <TextView
+        android:id="@+id/my_profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text_area"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar"
+        />
+
+
+    <TextView
+        android:id="@+id/my_profile_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text_area"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_profile_name"
+        />
+
+
+    <TextView
+        android:id="@+id/my_profile_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text_area"
+        android:textSize="25sp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/my_profile_phone"
+        />
+
+
+    <TextView
+        android:id="@+id/my_profile_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text_area"
+        app:layout_constraintStart_toEndOf="@+id/my_profile_address"
+        android:textSize="25sp"
+        app:layout_constraintTop_toBottomOf="@+id/my_profile_phone"
+        />
+
+    <TextView
+        android:id="@+id/my_profile_my_product_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/my_products"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_profile_city"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

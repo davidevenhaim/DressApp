@@ -17,6 +17,10 @@ public class Constants {
     public final static String IMG = "img";
     public final static String USERS = "users";
     public final static String TAG = "TAG";
+    public final static String LANG = "lang";
+    public final static String LANT = "lant";
+    public static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+
 
 
     public final static String MODEL_FIRE_BASE_IMAGE_COLLECTION = "product_images";

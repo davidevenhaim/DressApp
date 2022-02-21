@@ -2,12 +2,15 @@ package com.example.dressapp1;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -39,7 +42,14 @@ import android.widget.Toast;
 
 import com.example.dressapp1.model.Model;
 import com.example.dressapp1.model.Product;
+import com.example.dressapp1.model.helpers.Constants;
+import com.example.dressapp1.model.interfaces.PermissionCallback;
 import com.example.dressapp1.model.interfaces.UploadProductListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 
 public class NewPostFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -50,7 +60,11 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
     Button uploadBtn;
     ImageButton uploadImageBtn;
     Bitmap bitmap;
+    Product product;
     ProgressBar progressBar;
+    OnMapReadyCallback onMapReadyCallback;
+    LatLng lastKnownLocation = null;
+    MapView map;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +75,6 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_new_post, container, false);
-
         genderInput = view.findViewById(R.id.select_gender);
         sizeInput = view.findViewById(R.id.select_size);
         categoryInput = view.findViewById(R.id.select_category);
@@ -72,6 +85,8 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
 
         uploadBtn.setOnClickListener(this);
         uploadImageBtn.setOnClickListener(this);
+
+        product = new Product();
 
         ArrayAdapter<CharSequence> genderAd = ArrayAdapter.
                 createFromResource(getContext(), R.array.choose_gender, android.R.layout.simple_spinner_item);
@@ -92,7 +107,43 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
         categoryInput.setOnItemSelectedListener(this);
         sizeInput.setOnItemSelectedListener(this);
 
+        InitialGoogleMap(savedInstanceState);
+
         return view;
+    }
+
+    private void InitialGoogleMap(Bundle savedInstanceState) {
+        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
+        Bundle mapViewBundle = null;
+        if (savedInstanceState != null) {
+            mapViewBundle = savedInstanceState.getBundle(Constants.MAPVIEW_BUNDLE_KEY);
+        }
+
+        onMapReadyCallback = map -> {
+            MainActivity.permissionCallback = new PermissionCallback() {
+                @SuppressLint("MissingPermission")
+                @Override
+                public void onResult(boolean isGranted) {
+                    if (isGranted) {
+                    }
+                }
+            };
+            if (ActivityCompat.checkSelfPermission(MyApplication.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+                    PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MyApplication.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},123);
+            }
+
+            map.setMyLocationEnabled(true);
+            map.setOnMapClickListener(latLng -> {
+                lastKnownLocation = new LatLng(latLng.latitude, latLng.longitude);
+                map.addMarker(new MarkerOptions().position(new LatLng(latLng.latitude, latLng.longitude)).title(product.getCategory()));
+            });
+
+            if (lastKnownLocation == null)
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(31.789080,34.654600), 7.5F));
+        };
+        map.onCreate(mapViewBundle);
+        map.getMapAsync(onMapReadyCallback);
     }
 
     @Override
@@ -141,7 +192,12 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
         }
         setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
-        Product product = new Product(size, price, gender, category);
+
+        product.setSize(size);
+        product.setPrice(price);
+        product.setGender(gender);
+        product.setCategory(category);
+
         Model.instance.addPost(product, bitmap, new UploadProductListener() {
             @Override
             public void onComplete(Task task, Product product, String userId) {

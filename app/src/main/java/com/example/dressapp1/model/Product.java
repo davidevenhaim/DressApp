@@ -27,6 +27,8 @@ public class Product implements Parcelable {
     private String size, price, gender, category, img;
     private Long lastUpdated;
     private boolean isDeleted;
+    private double lang;
+    private double lant;
 
     public Product(){}
 
@@ -37,13 +39,17 @@ public class Product implements Parcelable {
         this.category = category;
     }
 
-    public Product(String size, String price, String gender, String category, Long lastU) {
+    public Product(String size, String price, String gender, String category, Long lastU, String img, double lang, double lant) {
         this.size = size;
         this.price = price;
         this.gender = gender;
         this.category = category;
         this.lastUpdated = lastU;
+        this.img = img;
+        this.lang = lang;
+        this.lant = lant;
     }
+
 
     public String getSize() {
         return size;
@@ -66,6 +72,10 @@ public class Product implements Parcelable {
     public String getCategory() {
         return category;
     }
+
+    public Double getLang() {return this.lang;}
+
+    public Double getLant() {return this.lant;}
 
     public boolean isDeleted() {
         return isDeleted;
@@ -103,20 +113,30 @@ public class Product implements Parcelable {
         isDeleted = deleted;
     }
 
+    public void setLang(double lang) {
+        this.lang = lang;
+    }
+
+    public void setLant(double lant) {
+        this.lant = lant;
+    }
+
     public void setLastUpdated(Long lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 
-    static Product fromJson(Map<String,Object> json){
-        String size = json.get(Constants.SIZE).toString();
-        String price = json.get(Constants.PRICE).toString();
-        String gender = json.get(Constants.GENDER).toString();
-        String category = json.get(Constants.CATEGORY).toString();
+    static Product fromJson(Map<String,Object> json) {
+        String size = json.get(Constants.SIZE) + "";
+        String price = json.get(Constants.PRICE) + "";
+        String gender = json.get(Constants.GENDER) + "";
+        String category = json.get(Constants.CATEGORY) + "";
         String img = json.get(Constants.IMG) + "";
+//        Double lang = (double) json.get(Constants.LANG);
+//        Double lant = (double) json.get(Constants.LANT);
+
         Timestamp ts =  (Timestamp) json.get(Constants.TIME);
 
-        Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()));
-        product.setImg(img);
+        Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()), img, new Double(0), new Double(0));
         return product;
     }
 
@@ -131,7 +151,6 @@ public class Product implements Parcelable {
                 .getSharedPreferences(Constants.TAG, Context.MODE_PRIVATE).edit();
         editor.putLong(Constants.PRODUCT_LAST_UPDATE,date);
         editor.commit();
-        Log.d(Constants.TAG, "new lud " + date);
     }
 
     @Override

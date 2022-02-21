@@ -12,6 +12,7 @@
     <string name="upload">Upload</string>
     <string name="call">Call</string>
     <string name="map">Map</string>
+    <string name="my_products">My Products</string>
     <string-array name="choose_gender">
         <item>Man</item>
         <item>Woman</item>
