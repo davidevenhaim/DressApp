@@ -73,7 +73,11 @@
         android:id="@+id/myProfileFragment"
         android:name="com.example.dressapp1.MyProfileFragment"
         android:label="fragment_my_profile"
-        tools:layout="@layout/fragment_my_profile" />
+        tools:layout="@layout/fragment_my_profile" >
+        <action
+            android:id="@+id/action_myProfileFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
     <fragment
         android:id="@+id/productGridFragment"
         android:name="com.example.dressapp1.ProductGridFragment"
@@ -88,5 +92,23 @@
         <action
             android:id="@+id/action_productGridFragment_to_myProfileFragment"
             app:destination="@id/myProfileFragment" />
+        <action
+            android:id="@+id/action_productGridFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_productGridFragment_to_selectGenderFragment"
+            app:destination="@id/selectGenderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.dressapp1.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_productGridFragment"
+            app:destination="@id/productGridFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_productPageFragment"
+            app:destination="@id/productPageFragment" />
     </fragment>
 </navigation>

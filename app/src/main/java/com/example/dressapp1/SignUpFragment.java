@@ -121,7 +121,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         DBModel.dbInstance.registerUser(user, password, (user1, task) -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getActivity(), "User Created - Check your email inbox", Toast.LENGTH_LONG).show();
-                user1.sendEmailVerification();
+//                user1.sendEmailVerification();
                 Navigation.findNavController(view).navigate(SignUpFragmentDirections.actionSignUpFragmentToLogInFragment());
                 Log.d("Success", "Email sent");
             } else {

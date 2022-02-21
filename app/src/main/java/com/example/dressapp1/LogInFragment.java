@@ -1,5 +1,7 @@
 package com.example.dressapp1;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -52,6 +54,18 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
         loginBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);
 
+        SharedPreferences sp1 = this.getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
+
+        String email = sp1.getString("email", null);
+        String password = sp1.getString("password", null);
+        Log.d("E", email + password);
+
+        if(email != null && password != null) {
+            pBar.setVisibility(View.VISIBLE);
+            setEnabled(false);
+            loginUserDB(email, password);
+        }
+
         return view;
     }
 
@@ -95,32 +109,31 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
         }
         pBar.setVisibility(View.VISIBLE);
         setEnabled(false);
+        loginUserDB(email, password);
 
+    }
+
+    private void loginUserDB(String email, String password) {
         DBModel.dbInstance.loginUser(email, password, new DBModel.LoginUserListener() {
             @Override
             public void onComplete(FirebaseUser user, Task<AuthResult> task) {
                 if(task.isSuccessful()) {
-                    if(user.isEmailVerified()) {
-//                        Navigation.findNavController(view).popBackStack(R.id.logInFragment, true);
+                        SharedPreferences sp= getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor Ed=sp.edit();
+                        Ed.putString("email", email );
+                        Ed.putString("password", password);
+                        Ed.commit();
                         Navigation.findNavController(view).navigate(LogInFragmentDirections.actionLogInFragmentToSelectGenderFragment());
                         Toast.makeText(getActivity(), "Login successfully", Toast.LENGTH_SHORT).show();
                         pBar.setVisibility(View.INVISIBLE);
-                    } else {
-                        user.sendEmailVerification();
-                        Toast.makeText(getActivity(), "Email Verification Sent, check your inbox! and try login again", Toast.LENGTH_SHORT).show();
-                        Log.d("E", "Email verification.");
-                                pBar.setVisibility(View.INVISIBLE);
-                        setEnabled(true);
-                    }
                 } else {
                     Toast.makeText(getActivity(), "Login failed. Email/Password is incorrect", Toast.LENGTH_SHORT).show();
                     Log.d("ERR","login failed");
                     pBar.setVisibility(View.INVISIBLE);
-                    setEnabled(true);
                 }
+                setEnabled(true);
             }
         });
-
     }
 
 }

@@ -1,8 +1,11 @@
 package com.example.dressapp1;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,21 +16,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dressapp1.model.Product;
 import com.example.dressapp1.model.User;
 import com.squareup.picasso.Picasso;
 
-public class ProductPageFragment extends Fragment {
+public class ProductPageFragment extends Fragment implements View.OnClickListener {
     View view;
-    String productId;
-    String ownerId;
     Product curProduct;
     User owner;
     ImageView productImg, userAvatar;
     Button callBtn, mapBtn;
     TextView priceText, sizeText;
     ProgressBar progressBar;
+    ImageButton myProfileBtn, searchBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,6 @@ public class ProductPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_product_page, container, false);
 
         productImg = view.findViewById(R.id.product_preview);
@@ -49,6 +51,13 @@ public class ProductPageFragment extends Fragment {
         priceText = view.findViewById(R.id.product_price);
         sizeText = view.findViewById(R.id.product_size);
         progressBar = view.findViewById(R.id.product_progress);
+        myProfileBtn = view.findViewById(R.id.bottom_bar_profile);
+        searchBtn = view.findViewById(R.id.bottom_bar_search);
+
+        callBtn.setOnClickListener(this);
+        mapBtn.setOnClickListener(this);
+        myProfileBtn.setOnClickListener(this);
+        searchBtn.setOnClickListener(this);
 
         priceText.setText(curProduct.getPrice());
         sizeText.setText(curProduct.getSize());
@@ -59,4 +68,33 @@ public class ProductPageFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.product_call:
+                call();
+                break;
+            case R.id.product_map:
+                map();
+                break;
+            case R.id.bottom_bar_profile:
+                Navigation.findNavController(view).navigate(ProductGridFragmentDirections.actionProductGridFragmentToMyProfileFragment());
+                break;
+            case R.id.bottom_bar_search:
+                Navigation.findNavController(view).navigate(ProductGridFragmentDirections.actionProductGridFragmentToSelectGenderFragment());
+                break;
+        }
+    }
+
+    public void call() {
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "0509619325", null)));
+        Toast.makeText(getActivity(), "phone call", Toast.LENGTH_LONG).show();
+    }
+
+    public void map() {
+        Log.d("MAP", "map clicked");
+    }
+
+
 }
