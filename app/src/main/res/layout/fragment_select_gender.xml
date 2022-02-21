@@ -8,20 +8,11 @@
 
     <include
         layout="@layout/top_bar_nav"
+        android:layout_width="457dp"
+        android:layout_height="53dp"
         app:layout_constraintBaseline_toTopOf="parent"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_marginTop="35sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         />
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:id="@+id/man_text_container"
-    >
 
     <TextView
         android:id="@+id/man_text"
@@ -31,12 +22,9 @@
         android:layout_centerVertical="true"
         android:text="@string/man"
         android:textSize="30sp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="60sp"
-        />
-
-</RelativeLayout>
+        tools:layout_editor_absoluteX="294dp"
+        tools:layout_editor_absoluteY="147dp"
+        tools:ignore="MissingConstraints" />
 
     <ImageButton
         android:id="@+id/man_btn"
@@ -44,25 +32,21 @@
         android:layout_height="wrap_content"
         android:background="@color/cardview_shadow_end_color"
         android:src="@drawable/man"
-        app:layout_constraintTop_toBottomOf="@+id/man_text_container"
-        />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/woman_text_container"
-        >
+        app:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteX="229dp"
+        tools:layout_editor_absoluteY="207dp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:text="@string/woman"
         android:textSize="30sp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="60sp"
-        />
-
-    </RelativeLayout>
+        tools:layout_editor_absoluteX="54dp"
+        tools:layout_editor_absoluteY="147dp"
+        tools:ignore="MissingConstraints" />
 
     <ImageButton
         android:id="@+id/woman_btn"
@@ -70,17 +54,17 @@
         android:layout_height="wrap_content"
         android:background="@color/cardview_shadow_end_color"
         android:src="@drawable/woman"
-        app:layout_constraintTop_toBottomOf="@+id/woman_text_container"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="207dp"
+        tools:ignore="MissingConstraints" />
 
     <include
         layout="@layout/bottom_bar_nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="35sp"
-        />
+        android:layout_width="407dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="678dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
