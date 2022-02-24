@@ -57,8 +57,18 @@
         android:label="fragment_new_post"
         tools:layout="@layout/fragment_new_post" >
         <action
-            android:id="@+id/action_newPostFragment_to_productPageFragment"
-            app:destination="@id/productPageFragment" />
+            android:id="@+id/action_newPostFragment_to_selectGenderFragment"
+            app:destination="@id/selectGenderFragment" />
+        <action
+            android:id="@+id/action_newPostFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
+        <action
+            android:id="@+id/action_newPostFragment_to_productGridFragment"
+            app:destination="@id/productGridFragment" />
+        <argument
+            android:name="existingProduct"
+            app:argType="com.example.dressapp1.model.Product"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/productPageFragment"
@@ -68,6 +78,18 @@
         <argument
             android:name="product"
             app:argType="com.example.dressapp1.model.Product" />
+        <action
+            android:id="@+id/action_productPageFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_productPageFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
+        <action
+            android:id="@+id/action_productPageFragment_to_selectGenderFragment"
+            app:destination="@id/selectGenderFragment" />
+        <action
+            android:id="@+id/action_productPageFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
@@ -75,8 +97,14 @@
         android:label="fragment_my_profile"
         tools:layout="@layout/fragment_my_profile" >
         <action
-            android:id="@+id/action_myProfileFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
+            android:id="@+id/action_myProfileFragment_to_selectGenderFragment"
+            app:destination="@id/selectGenderFragment" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_logInFragment"
+            app:destination="@id/logInFragment" />
     </fragment>
     <fragment
         android:id="@+id/productGridFragment"
@@ -93,9 +121,6 @@
             android:id="@+id/action_productGridFragment_to_myProfileFragment"
             app:destination="@id/myProfileFragment" />
         <action
-            android:id="@+id/action_productGridFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
-        <action
             android:id="@+id/action_productGridFragment_to_selectGenderFragment"
             app:destination="@id/selectGenderFragment" />
     </fragment>
@@ -105,10 +130,19 @@
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" >
         <action
-            android:id="@+id/action_mapFragment_to_productGridFragment"
-            app:destination="@id/productGridFragment" />
-        <action
             android:id="@+id/action_mapFragment_to_productPageFragment"
             app:destination="@id/productPageFragment" />
+        <argument
+            android:name="product"
+            app:argType="com.example.dressapp1.model.Product" />
+        <action
+            android:id="@+id/action_mapFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_selectGenderFragment"
+            app:destination="@id/selectGenderFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
     </fragment>
 </navigation>

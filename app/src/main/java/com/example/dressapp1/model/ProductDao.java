@@ -20,6 +20,6 @@ public interface ProductDao {
     @Delete
     void delete(Product products);
 
-    @Query("SELECT * FROM Product WHERE id=:id ")
+    @Query("SELECT * FROM Product WHERE ownerId=:id ")
     LiveData<List<Product>> getProductById(String id);
 }

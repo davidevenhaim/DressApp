@@ -13,7 +13,6 @@ import java.util.concurrent.Executors;
 public class MyApplication extends Application {
     private static Context appContext;
     public static ExecutorService executorService = Executors.newFixedThreadPool(2);
-//    public static Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
 
     @Override
     public void onCreate() {

@@ -7,13 +7,12 @@ import androidx.room.TypeConverters;
 
 import com.example.dressapp1.MyApplication;
 
-@Database(entities = {Product.class,User.class}, version = 4)
+@Database(entities = {Product.class,User.class}, version = 10)
 @TypeConverters(ProductListConverter.class)
 abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract ProductDao productDao();
     public abstract UserDao userDao();
 }
-
 
 public class AppLocalDB {
     static public final AppLocalDbRepository db =

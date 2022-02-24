@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.dressapp1.model.DBModel;
+import com.example.dressapp1.model.helpers.Constants;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -56,9 +57,8 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
 
         SharedPreferences sp1 = this.getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
 
-        String email = sp1.getString("email", null);
-        String password = sp1.getString("password", null);
-        Log.d("E", email + password);
+        String email = sp1.getString(Constants.CUR_USER + "_email", null);
+        String password = sp1.getString(Constants.CUR_USER + "_password", null);
 
         if(email != null && password != null) {
             pBar.setVisibility(View.VISIBLE);
@@ -120,8 +120,10 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
                 if(task.isSuccessful()) {
                         SharedPreferences sp= getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
                         SharedPreferences.Editor Ed=sp.edit();
-                        Ed.putString("email", email );
-                        Ed.putString("password", password);
+
+                        Ed.putString(Constants.CUR_USER + "_email", email );
+                        Ed.putString(Constants.CUR_USER + "_password", password);
+                        Ed.putString(Constants.CUR_USER + "_id", user.getUid());
                         Ed.commit();
                         Navigation.findNavController(view).navigate(LogInFragmentDirections.actionLogInFragmentToSelectGenderFragment());
                         Toast.makeText(getActivity(), "Login successfully", Toast.LENGTH_SHORT).show();

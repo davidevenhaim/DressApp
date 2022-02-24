@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.dressapp1.MyApplication;
+import com.example.dressapp1.model.interfaces.EditProductListener;
+import com.example.dressapp1.model.interfaces.GetUserById;
 import com.example.dressapp1.model.interfaces.UploadImageListener;
 import com.example.dressapp1.model.interfaces.UploadProductListener;
 import com.google.android.gms.tasks.Task;
@@ -26,10 +28,6 @@ public class Model {
         reloadProductList();
     }
 
-    public interface GetAllProductsListener {
-        void onComplete(List<Product> data);
-    }
-
     public LiveData<LoadingState> getLoadingState() {
         return loadingState;
     }
@@ -44,42 +42,51 @@ public class Model {
 
         fbModel.getAllProducts(localLastUpdate,(list)-> {
             if(list != null) {
-            MyApplication.executorService.execute(()->{
-                Long lLastUpdate = new Long(0);
+                MyApplication.executorService.execute(()->{
+                    Long lLastUpdate = new Long(0);
 
-                for(Product product : list){
-                        if(!product.isDeleted()) {
-                            AppLocalDB.db.productDao().insertAll(product);
-                        }
-                        else {
-                            AppLocalDB.db.productDao().delete(product);
-                        }
-                        if (product.getLastUpdated() > lLastUpdate){
-                            lLastUpdate = product.getLastUpdated();
-                        }
-                }
-                Product.setLocalLastUpdated(lLastUpdate);
-                List<Product> allProducts = AppLocalDB.db.productDao().getAll();
-                productListLtd.postValue(allProducts);
+                    for(Product product : list) {
+                            if(!product.isDeleted()) {
+                                AppLocalDB.db.productDao().insertAll(product);
+                            } else {
+                                AppLocalDB.db.productDao().delete(product);
+                            } if (product.getLastUpdated() > lLastUpdate){
+                                lLastUpdate = product.getLastUpdated();
+                            }
+                    }
+                    Product.setLocalLastUpdated(new Long(0));
+                    List<Product> allProducts = AppLocalDB.db.productDao().getAll();
+                    productListLtd.postValue(allProducts);
 
-                loadingState.postValue(LoadingState.loaded);
-            });
-
+                    loadingState.postValue(LoadingState.loaded);
+                });
             }
         });
     }
 
-    public void uploadImage(Bitmap bitmap, String name, final UploadImageListener listener){
-        fbModel.uploadImage(bitmap,name,listener);
+    public void getUserById(String userId, GetUserById listener) {
+        fbModel.getUserById(userId,listener);
+    }
+
+    public LiveData<List<Product>> getUserProductsByUserId(String userId) {
+        return AppLocalDB.db.productDao().getProductById(userId);
     }
 
     public void addPost(Product product, Bitmap bitmap, UploadProductListener listener){
-        Log.d("PRODUCT", product.getCategory());
         fbModel.uploadProduct(product, bitmap, new UploadProductListener() {
             @Override
             public void onComplete(Task task, Product product, String userId) {
             reloadProductList();
             listener.onComplete(task, product, userId);
+            }
+        });
+    }
+
+    public void editPost(Product product, Bitmap bitmap, EditProductListener listener) {
+        fbModel.editProduct(product, bitmap, new EditProductListener() {
+            @Override
+            public void onComplete(Product product) {
+                  listener.onComplete(product);
             }
         });
     }

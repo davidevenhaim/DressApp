@@ -66,7 +66,7 @@ public class SelectGenderFragment extends Fragment implements View.OnClickListen
                 Navigation.findNavController(view).navigate(SelectGenderFragmentDirections.actionSelectGenderFragmentToProductGridFragment2());
                 break;
             case R.id.add_new_post_btn:
-                Navigation.findNavController(view).navigate(SelectGenderFragmentDirections.actionSelectGenderFragmentToNewPostFragment());
+                Navigation.findNavController(view).navigate(SelectGenderFragmentDirections.actionSelectGenderFragmentToNewPostFragment(null));
                 break;
             case R.id.bottom_bar_profile:
                 Navigation.findNavController(view).navigate(SelectGenderFragmentDirections.actionSelectGenderFragmentToMyProfileFragment());

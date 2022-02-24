@@ -39,7 +39,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
         signUpBtn = view.findViewById(R.id.signup_btn);
         alreadyMember = view.findViewById(R.id.already_member);
-
         pBar = view.findViewById(R.id.signup_progress);
 
         fullNameInput = view.findViewById(R.id.register_name_input);

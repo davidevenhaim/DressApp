@@ -16,7 +16,9 @@ import com.example.dressapp1.MyApplication;
 import com.example.dressapp1.model.helpers.Constants;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Entity
@@ -24,30 +26,24 @@ public class Product implements Parcelable {
     @PrimaryKey
     @NonNull
     private String id;
-    private String size, price, gender, category, img;
+    private String size, price, gender, category, img, ownerId, ownerPhone;
     private Long lastUpdated;
     private boolean isDeleted;
-    private double lang;
-    private double lant;
+    private double longtitude;
+    private double lantitude;
 
     public Product(){}
 
-    public Product(String size, String price, String gender, String category ) {
-        this.size = size;
-        this.price = price;
-        this.gender = gender;
-        this.category = category;
-    }
-
-    public Product(String size, String price, String gender, String category, Long lastU, String img, double lang, double lant) {
+    public Product(String size, String price, String gender, String category, Long lastU, String img, double longtitude, double lantitude, String ownerId) {
         this.size = size;
         this.price = price;
         this.gender = gender;
         this.category = category;
         this.lastUpdated = lastU;
         this.img = img;
-        this.lang = lang;
-        this.lant = lant;
+        this.longtitude = longtitude;
+        this.lantitude = lantitude;
+        this.ownerId = ownerId;
     }
 
 
@@ -73,9 +69,17 @@ public class Product implements Parcelable {
         return category;
     }
 
-    public Double getLang() {return this.lang;}
+    public String getOwnerId() {
+        return ownerId;
+    }
 
-    public Double getLant() {return this.lant;}
+    public String getOwnerPhone() {
+        return ownerPhone;
+    }
+
+    public Double getLongtitude() {return this.longtitude;}
+
+    public Double getLantitude() {return this.lantitude;}
 
     public boolean isDeleted() {
         return isDeleted;
@@ -83,6 +87,14 @@ public class Product implements Parcelable {
 
     public Long getLastUpdated() {
         return lastUpdated;
+    }
+
+    public void setOwnerId(String ownerId ) {
+        this.ownerId = ownerId;
+    }
+
+    public void setOwnerPhone(String ownerPhone) {
+        this.ownerPhone = ownerPhone;
     }
 
     public void setSize(String size) {
@@ -113,12 +125,12 @@ public class Product implements Parcelable {
         isDeleted = deleted;
     }
 
-    public void setLang(double lang) {
-        this.lang = lang;
+    public void setLongtitude(double longtitude) {
+        this.longtitude = longtitude;
     }
 
-    public void setLant(double lant) {
-        this.lant = lant;
+    public void setLantitude(double lantitude) {
+        this.lantitude = lantitude;
     }
 
     public void setLastUpdated(Long lastUpdated) {
@@ -131,13 +143,31 @@ public class Product implements Parcelable {
         String gender = json.get(Constants.GENDER) + "";
         String category = json.get(Constants.CATEGORY) + "";
         String img = json.get(Constants.IMG) + "";
-//        Double lang = (double) json.get(Constants.LANG);
-//        Double lant = (double) json.get(Constants.LANT);
+        String ownerId = json.get(Constants.OWNER) + "";
+
+        Double longtitude = (double) json.get(Constants.LANG);
+        Double lantitude = (double) json.get(Constants.LANT);
 
         Timestamp ts =  (Timestamp) json.get(Constants.TIME);
 
-        Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()), img, new Double(0), new Double(0));
+        Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()), img, longtitude, lantitude, ownerId);
         return product;
+    }
+
+    public Map<String, Object> toJson() {
+        Map<String, Object> dbProduct = new HashMap<>();
+
+        dbProduct.put(Constants.IMG, img);
+        dbProduct.put(Constants.CATEGORY, category);
+        dbProduct.put(Constants.SIZE, size);
+        dbProduct.put(Constants.GENDER, gender);
+        dbProduct.put(Constants.PRICE, price);
+        dbProduct.put(Constants.TIME, FieldValue.serverTimestamp());
+        dbProduct.put(Constants.OWNER, ownerId);
+        dbProduct.put(Constants.LANG, longtitude);
+        dbProduct.put(Constants.LANT, lantitude);
+
+        return dbProduct;
     }
 
     static Long getLocalLastUpdated(){
@@ -177,6 +207,11 @@ public class Product implements Parcelable {
         parcel.writeString(gender);
         parcel.writeString(category);
         parcel.writeString(img);
+        parcel.writeDouble(lantitude);
+        parcel.writeDouble(longtitude);
+        parcel.writeString(ownerId);
+
+
         parcel.writeByte((byte) (isDeleted ? 1 : 0));
 
         if (lastUpdated == null) {
@@ -184,8 +219,8 @@ public class Product implements Parcelable {
         } else {
             parcel.writeByte((byte) 1);
             parcel.writeLong(lastUpdated);
-            }
         }
+    }
 
     protected Product(Parcel in) {
         id = in.readString();
@@ -194,6 +229,10 @@ public class Product implements Parcelable {
         gender = in.readString();
         category = in.readString();
         img = in.readString();
+        lantitude = in.readDouble();
+        longtitude = in.readDouble();
+        ownerId = in.readString();
+
         isDeleted = in.readByte() != 0;
 
         if (in.readByte() == 0) {
@@ -202,4 +241,5 @@ public class Product implements Parcelable {
             lastUpdated = in.readLong();
         }
     }
+
 }

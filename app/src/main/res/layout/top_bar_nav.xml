@@ -8,6 +8,10 @@
         android:id="@+id/top_text_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="2sp"
         >
     <ImageView
         android:layout_width="wrap_content"
@@ -19,6 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="10sp"
+        android:layout_marginTop="4sp"
         >
         <ImageButton
             android:id="@+id/add_new_post_btn"

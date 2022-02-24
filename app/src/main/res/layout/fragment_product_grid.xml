@@ -22,10 +22,11 @@
                 android:id="@+id/product_list_swipe_refresh"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@id/bottom_bar_container_grid"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/top_bar_container">
+                app:layout_constraintBottom_toTopOf="@id/bottom_bar_container_grid"
+                app:layout_constraintTop_toBottomOf="@id/top_bar_container"
+                >
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
@@ -41,7 +42,6 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10sp"
         android:paddingRight="10sp"
-        android:layout_marginBottom="35sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -12,6 +12,10 @@
     <string name="upload">Upload</string>
     <string name="call">Call</string>
     <string name="map">Map</string>
+    <string name="edit_product">Edit Product</string>
+    <string name="logout">Logout</string>
+    <string name="backToProduct">Back To Product Details</string>
+    <string name="google_map_api_key">AIzaSyCaOC_W5r1eDgkWpYTmgMp5Ij5OzbJ-jzY</string>
     <string name="my_products">My Products</string>
     <string-array name="choose_gender">
         <item>Man</item>

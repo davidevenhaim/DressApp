@@ -7,10 +7,10 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.dressapp1.model.helpers.Constants;
+import com.example.dressapp1.model.interfaces.EditProductListener;
+import com.example.dressapp1.model.interfaces.GetUserById;
 import com.example.dressapp1.model.interfaces.UploadImageListener;
 import com.example.dressapp1.model.interfaces.UploadProductListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,8 +21,6 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -34,7 +32,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -73,7 +70,6 @@ public class DBModel {
                         dbUser.put(Constants.FNAME, user.getFullName());
                         dbUser.put(Constants.CITY , user.getCity());
                         dbUser.put(Constants.TIME , FieldValue.serverTimestamp());
-//                        dbUser.put("products", user.getProducts());
 
                         documentReference.set(dbUser).addOnCompleteListener(task1 -> {
                             FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -85,48 +81,14 @@ public class DBModel {
             });
     }
 
-    public interface GetProductListener{
-        void onComplete(Product product);
-    }
-
-    public void getProduct(String productId, GetProductListener listener ) {
-        DocumentReference productDocRef = db.collection(Constants.PRODUCTS).document(productId);
-        productDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReference();
-                DocumentSnapshot document = task.getResult();
-                storageRef.child("images/" + productId + ".jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if(document.exists()) {
-                            Product product = Product.fromJson(document.getData());
-                            Log.d("product", product.getCategory() + product.getGender() + product.getPrice());
-                            product.setImg(task.getResult().toString());
-                            listener.onComplete(product);
-                        }else {
-                            listener.onComplete(null);
-                        }
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                listener.onComplete(null);
-            }
-        });
-    }
-
     public interface GetAllProductsListener{
         void onComplete(List<Product> productsList);
     }
 
 
-    public void getAllProducts(Long since,GetAllProductsListener listener) {
-        Log.d("TIME", since.toString());
-        db.collection(Constants.PRODUCTS).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    public void getAllProducts(Long since, GetAllProductsListener listener) {
+        db.collection(Constants.PRODUCTS)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()) {
@@ -149,6 +111,24 @@ public class DBModel {
         });
     }
 
+    public void getUserById(String uid, GetUserById listener) {
+
+        DocumentReference docRef = db.collection(Constants.FB_USER_COLLECTION).document(uid);
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    User u = User.fromJson(document.getData());
+                    listener.onComplete(u);
+                } else {
+                    listener.onComplete(null);
+                }
+            } else {
+                listener.onComplete(null);
+            }
+        });
+    }
+
     public void uploadProduct(Product product, Bitmap bitmap, UploadProductListener listener) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DocumentReference userRef = db.collection(Constants.USERS).document(user.getUid());
@@ -160,23 +140,15 @@ public class DBModel {
         productDocRef.set(dbProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                DocumentReference userRef = db.collection(Constants.USERS).document(user.getUid());
+                // creating array of references in the user doc.
                 userRef.update( Constants.PRODUCTS, FieldValue.arrayUnion(productDocRef)).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(@NonNull Void unused) {
                         uploadImage(bitmap, productDocRef.getId(), url -> {
                             if(url != null) {
-                                dbProduct.put(Constants.IMG, url);
-                                dbProduct.put(Constants.CATEGORY, product.getCategory());
-                                dbProduct.put(Constants.SIZE, product.getSize());
-                                dbProduct.put(Constants.GENDER, product.getGender());
-                                dbProduct.put(Constants.PRICE, product.getPrice());
-                                dbProduct.put(Constants.TIME, FieldValue.serverTimestamp());
-                                dbProduct.put(Constants.OWNER, userRef);
-                                dbProduct.put(Constants.LANG, product.getLang());
-                                dbProduct.put(Constants.LANT, product.getLant());
-
-                                productDocRef.set(dbProduct).addOnCompleteListener(task1 -> {
+                                product.setImg(url);
+                                product.setOwnerId(user.getUid());
+                                productDocRef.set(product.toJson()).addOnCompleteListener(task1 -> {
                                             product.setImg(url);
                                             listener.onComplete(task1, product, user.getUid());
                                         });
@@ -191,11 +163,40 @@ public class DBModel {
         });
     }
 
+    public void editProduct(Product product, Bitmap bitmap, EditProductListener listener) {
+        DocumentReference docRef = db.collection(Constants.PRODUCTS).document(product.getId());
+        if(bitmap == null) {
+            Log.d("BITMAP null", "bitmap checked and is null!@#!2312312");
+            docRef.set(product.toJson()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    listener.onComplete(product);
+                }
+            });
+        } else {
+            Log.d("BITMAP not NULL", "bitmap checked and is NOT!!! !@#!2312312");
+            uploadImage(bitmap, product.getId(), new UploadImageListener() {
+                @Override
+                public void onComplete(String url) {
+                    product.setImg(url);
+                    docRef.set(product.toJson()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            listener.onComplete(product);
+                        }
+                    });
+
+                }
+            });
+        }
+
+    }
+
     public void uploadImage(Bitmap bitmap, String docId, final UploadImageListener listener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference imageRef;
 
-        imageRef = storage.getReference().child(Constants.MODEL_FIRE_BASE_IMAGE_COLLECTION).child(docId);
+        imageRef = storage.getReference().child(Constants.FB_IMAGE_COLLECTION).child(docId);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
         byte[] data = baos.toByteArray();

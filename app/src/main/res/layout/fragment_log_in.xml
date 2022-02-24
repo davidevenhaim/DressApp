@@ -82,7 +82,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5sp"
                 android:text="Forget Your Password?"
-                android:textColor="@color/grey" />
+                android:textColor="@color/grey"
+                />
+
         </RelativeLayout>
 
         <RelativeLayout

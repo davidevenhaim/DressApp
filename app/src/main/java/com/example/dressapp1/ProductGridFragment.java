@@ -1,6 +1,7 @@
 package com.example.dressapp1;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import android.widget.ProgressBar;
 import com.example.dressapp1.model.LoadingState;
 import com.example.dressapp1.model.Model;
 import com.example.dressapp1.model.Product;
+import com.example.dressapp1.model.helpers.Constants;
 import com.example.dressapp1.model.interfaces.OnItemClickListener;
 import com.example.dressapp1.model.recycler.MyAdapter;
 
@@ -86,18 +89,17 @@ public class ProductGridFragment extends Fragment implements View.OnClickListene
             }
         });
 
-        adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                Product product = viewModel.getData().getValue().get(position);
-                ProductGridFragmentDirections.ActionProductGridFragmentToProductPageFragment action =
-                        ProductGridFragmentDirections.actionProductGridFragmentToProductPageFragment(product);
-                Navigation.findNavController(v).navigate(action);
-            }
+        adapter.setOnItemClickListener((position, v) -> {
+            progressBar.setVisibility(View.VISIBLE);
+            Product product = viewModel.getData().getValue().get(position);
+            ProductGridFragmentDirections.ActionProductGridFragmentToProductPageFragment action =
+                    ProductGridFragmentDirections.actionProductGridFragmentToProductPageFragment(product);
+            Navigation.findNavController(v).navigate(action);
+
         });
 
-        swipeRefresh.setRefreshing(Model.instance.getLoadingState().getValue()== LoadingState.loading);
+        swipeRefresh.setRefreshing(Model.instance.getLoadingState().getValue() == LoadingState.loading);
+
         Model.instance.getLoadingState().observe(getViewLifecycleOwner(), loadingState -> {
             swipeRefresh.setRefreshing(loadingState == LoadingState.loading);
         });
@@ -109,7 +111,7 @@ public class ProductGridFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.add_new_post_btn:
-                Navigation.findNavController(view).navigate(ProductGridFragmentDirections.actionProductGridFragmentToNewPostFragment());
+                Navigation.findNavController(view).navigate(ProductGridFragmentDirections.actionProductGridFragmentToNewPostFragment(null));
                 break;
             case R.id.bottom_bar_profile:
                 Navigation.findNavController(view).navigate(ProductGridFragmentDirections.actionProductGridFragmentToMyProfileFragment());
