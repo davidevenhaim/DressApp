@@ -210,15 +210,19 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
             return;
         }
         if(gender.isEmpty()) {
+            Toast.makeText(getActivity(), "Gender is a required field", Toast.LENGTH_SHORT).show();
             return;
         }
         if(size.isEmpty()) {
+            Toast.makeText(getActivity(), "Size is a required field", Toast.LENGTH_SHORT).show();
             return;
         }
         if(category.isEmpty()) {
+            Toast.makeText(getActivity(), "Category is a required field", Toast.LENGTH_SHORT).show();
             return;
         }
         if(bitmap == null && existingProduct == null && existingProduct.getImg() == null) {
+            Toast.makeText(getActivity(), "Photo is a required field", Toast.LENGTH_LONG).show();
             return;
         }
         setEnabled(false);

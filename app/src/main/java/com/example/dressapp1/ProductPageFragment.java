@@ -62,6 +62,7 @@ public class ProductPageFragment extends Fragment implements View.OnClickListene
         mapBtn.setOnClickListener(this);
         myProfileBtn.setOnClickListener(this);
         searchBtn.setOnClickListener(this);
+        editProduct.setOnClickListener(this);
 
         Model.instance.getUserById(curProduct.getOwnerId(), new GetUserById() {
             @Override
@@ -119,11 +120,8 @@ public class ProductPageFragment extends Fragment implements View.OnClickListene
     private boolean isProductOwner() {
         SharedPreferences sp = getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
         String currentUserId = sp.getString(Constants.CUR_USER + "_id", null);
-        Log.d("Owner ID", curProduct.getOwnerId() + "");
-        Log.d("Current Uid", currentUserId + "");
 
         if(curProduct.getOwnerId().trim().equals(currentUserId.trim())) {
-            Log.d("EQUAL"," is equal");
             return true;
         }
         return false;
