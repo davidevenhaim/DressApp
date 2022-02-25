@@ -36,11 +36,13 @@ public class ProductGridFragment extends Fragment implements View.OnClickListene
     MyAdapter adapter;
     ProgressBar progressBar;
     ImageButton addProdBtn, myProfileBtn, searchBtn;
+    String selectedGender;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         viewModel = new ViewModelProvider(this).get(ProductListFragmentViewModel.class);
+        selectedGender = ProductGridFragmentArgs.fromBundle(getArguments()).getGender();
     }
 
     @Override
@@ -70,6 +72,25 @@ public class ProductGridFragment extends Fragment implements View.OnClickListene
         int smallPadding = getResources().getDimensionPixelSize(R.dimen.product_grid_spacing_small);
         adapter = new MyAdapter();
 
+        if(selectedGender != null && (selectedGender == Constants.WOMAN || selectedGender == Constants.MAN)) {
+            viewModel.getDataByGender(selectedGender).observe(getViewLifecycleOwner(), products -> {
+                adapter.setFragment(ProductGridFragment.this);
+                adapter.setData(products);
+                adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+            });
+        }else {
+            viewModel.getData().observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
+                @Override
+                public void onChanged(List<Product> products) {
+                    adapter.setFragment(ProductGridFragment.this);
+                    adapter.setData(products);
+                    adapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+        }
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
@@ -79,19 +100,16 @@ public class ProductGridFragment extends Fragment implements View.OnClickListene
         myProfileBtn.setOnClickListener(this);
         searchBtn.setOnClickListener(this);
 
-        viewModel.getData().observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
-            @Override
-            public void onChanged(List<Product> products) {
-                adapter.setFragment(ProductGridFragment.this);
-                adapter.setData(products);
-                adapter.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
-            }
-        });
+
 
         adapter.setOnItemClickListener((position, v) -> {
             progressBar.setVisibility(View.VISIBLE);
-            Product product = viewModel.getData().getValue().get(position);
+            Product product;
+            if(selectedGender != null && (selectedGender == Constants.WOMAN || selectedGender == Constants.MAN)) {
+                product = viewModel.getDataByGender().getValue().get(position);
+            }else {
+                product = viewModel.getData().getValue().get(position);
+            }
             ProductGridFragmentDirections.ActionProductGridFragmentToProductPageFragment action =
                     ProductGridFragmentDirections.actionProductGridFragmentToProductPageFragment(product);
             Navigation.findNavController(v).navigate(action);

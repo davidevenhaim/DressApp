@@ -12,9 +12,18 @@ import java.util.List;
 public class ProductListFragmentViewModel extends ViewModel {
 
     LiveData<List<Product>> data = Model.instance.getAll();
+    LiveData<List<Product>> dataByGender;
 
     public LiveData<List<Product>> getData() {
         return data;
     }
 
+    public LiveData<List<Product>> getDataByGender(String gender) {
+        dataByGender = Model.instance.getAllByGender(gender);
+        return dataByGender;
+    }
+
+    public LiveData<List<Product>> getDataByGender() {
+        return dataByGender;
+    }
 }

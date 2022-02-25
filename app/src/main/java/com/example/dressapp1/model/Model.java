@@ -7,10 +7,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.dressapp1.MyApplication;
+import com.example.dressapp1.model.interfaces.DeleteProductListener;
 import com.example.dressapp1.model.interfaces.EditProductListener;
 import com.example.dressapp1.model.interfaces.GetUserById;
-import com.example.dressapp1.model.interfaces.UploadImageListener;
 import com.example.dressapp1.model.interfaces.UploadProductListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.List;
@@ -36,6 +37,10 @@ public class Model {
         return productListLtd;
     }
 
+    public LiveData<List<Product>> getAllByGender(String gender) {
+        return AppLocalDB.db.productDao().getProductByGender(gender);
+    }
+
     public void reloadProductList() {
         Long localLastUpdate = Product.getLocalLastUpdated();
         loadingState.setValue(LoadingState.loading);
@@ -49,6 +54,7 @@ public class Model {
                             if(!product.isDeleted()) {
                                 AppLocalDB.db.productDao().insertAll(product);
                             } else {
+                                Log.d("!", product.getPrice() + " Is deleted");
                                 AppLocalDB.db.productDao().delete(product);
                             } if (product.getLastUpdated() > lLastUpdate){
                                 lLastUpdate = product.getLastUpdated();
@@ -56,6 +62,11 @@ public class Model {
                     }
                     Product.setLocalLastUpdated(new Long(0));
                     List<Product> allProducts = AppLocalDB.db.productDao().getAll();
+                    for (Product p: allProducts){
+                        if(p.isDeleted()){
+                            AppLocalDB.db.productDao().delete(p);
+                        }
+                    }
                     productListLtd.postValue(allProducts);
 
                     loadingState.postValue(LoadingState.loaded);
@@ -72,22 +83,22 @@ public class Model {
         return AppLocalDB.db.productDao().getProductById(userId);
     }
 
-    public void addPost(Product product, Bitmap bitmap, UploadProductListener listener){
-        fbModel.uploadProduct(product, bitmap, new UploadProductListener() {
-            @Override
-            public void onComplete(Task task, Product product, String userId) {
+    public void DeletePost(Product product, DeleteProductListener listener) {
+        fbModel.deleteProduct(product, isSuccess -> {
+            product.setDeleted(true);
             reloadProductList();
-            listener.onComplete(task, product, userId);
-            }
+            listener.onComplete(true);
+        });
+    }
+
+    public void addPost(Product product, Bitmap bitmap, UploadProductListener listener){
+        fbModel.uploadProduct(product, bitmap, (task, product1, userId) -> {
+        reloadProductList();
+        listener.onComplete(task, product1, userId);
         });
     }
 
     public void editPost(Product product, Bitmap bitmap, EditProductListener listener) {
-        fbModel.editProduct(product, bitmap, new EditProductListener() {
-            @Override
-            public void onComplete(Product product) {
-                  listener.onComplete(product);
-            }
-        });
+        fbModel.editProduct(product, bitmap, product1 -> listener.onComplete(product1));
     }
 }

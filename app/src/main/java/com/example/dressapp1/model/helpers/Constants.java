@@ -18,11 +18,15 @@ public class Constants {
     public final static String PRODUCTS = "products";
     public final static String IMG = "img";
     public final static String USERS = "users";
+    public final static String WOMAN = "Woman";
+    public final static String MAN = "Man";
     public final static String TAG = "TAG";
     public final static String LANG = "lang";
     public final static String LANT = "lant";
+    public final static String IS_DELETED = "is_deleted";
     public final static String CUR_USER = "cur_user";
     public final static int REQUEST_CODE_LOCATION_PERMISSION = 1;
+
 
 
 

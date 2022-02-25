@@ -10,7 +10,9 @@
     <string name="size">Size</string>
     <string name="price">Price</string>
     <string name="upload">Upload</string>
+    <string name="delete">Delete</string>
     <string name="call">Call</string>
+    <string name="explore_all">Explore All</string>
     <string name="map">Map</string>
     <string name="edit_product">Edit Product</string>
     <string name="logout">Logout</string>

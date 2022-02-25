@@ -7,6 +7,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import com.example.dressapp1.model.interfaces.Gender;
+
 import java.util.List;
 
 @Dao
@@ -22,4 +24,7 @@ public interface ProductDao {
 
     @Query("SELECT * FROM Product WHERE ownerId=:id ")
     LiveData<List<Product>> getProductById(String id);
+
+    @Query("SELECT * FROM Product WHERE gender=:gender ")
+    LiveData<List<Product>> getProductByGender(String gender);
 }

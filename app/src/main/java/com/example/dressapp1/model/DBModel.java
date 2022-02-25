@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.example.dressapp1.model.helpers.Constants;
+import com.example.dressapp1.model.interfaces.DeleteProductListener;
 import com.example.dressapp1.model.interfaces.EditProductListener;
 import com.example.dressapp1.model.interfaces.GetUserById;
 import com.example.dressapp1.model.interfaces.UploadImageListener;
@@ -160,6 +161,22 @@ public class DBModel {
                 });
 
             }
+        });
+    }
+
+    public void deleteProduct(Product product, DeleteProductListener listener) {
+        DocumentReference productRef = db.collection(Constants.PRODUCTS).document(product.getId());
+
+        productRef.update(Constants.IS_DELETED, true).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    String ownerId = product.getOwnerId();
+                    DocumentReference userRef = db.collection(Constants.FB_USER_COLLECTION).document(ownerId);
+                    userRef.update(Constants.PRODUCTS, FieldValue.arrayRemove(productRef))
+                            .addOnCompleteListener(task1 -> listener.onComplete(true));
+                }
+             }
         });
     }
 

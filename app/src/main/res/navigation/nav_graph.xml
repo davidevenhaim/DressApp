@@ -123,6 +123,10 @@
         <action
             android:id="@+id/action_productGridFragment_to_selectGenderFragment"
             app:destination="@id/selectGenderFragment" />
+        <argument
+            android:name="gender"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"

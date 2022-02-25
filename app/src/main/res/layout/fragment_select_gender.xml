@@ -68,7 +68,20 @@
         tools:ignore="MissingConstraints"
         />
 
+    <Button
+        android:id="@+id/select_gender_explore_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/explore_all"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/woman_btn"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
+        />
+
     <include
+        android:id="@+id/bottom_bar"
         layout="@layout/bottom_bar_nav"
         android:layout_width="match_parent"
         android:layout_height="52dp"

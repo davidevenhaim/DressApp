@@ -108,7 +108,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
         int largePadding = getResources().getDimensionPixelSize(R.dimen.product_grid_spacing);
         int smallPadding = getResources().getDimensionPixelSize(R.dimen.product_grid_spacing_small);
         adapter = new MyAdapter();
-
+//
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));

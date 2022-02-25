@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.example.dressapp1.model.Model;
 import com.example.dressapp1.model.Product;
 import com.example.dressapp1.model.helpers.Constants;
+import com.example.dressapp1.model.interfaces.DeleteProductListener;
 import com.example.dressapp1.model.interfaces.EditProductListener;
 import com.example.dressapp1.model.interfaces.PermissionCallback;
 import com.example.dressapp1.model.interfaces.UploadProductListener;
@@ -60,7 +61,7 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
     View view;
     Spinner genderInput, sizeInput, categoryInput;
     EditText priceInput;
-    Button uploadBtn;
+    Button uploadBtn, deleteProductBtn;
     ImageButton uploadImageBtn, myProfileBtn, searchBtn;
     Bitmap bitmap;
     Product product;
@@ -80,11 +81,13 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
         sizeInput = view.findViewById(R.id.select_size);
         categoryInput = view.findViewById(R.id.select_category);
         priceInput = view.findViewById(R.id.new_post_price);
-        uploadBtn = view.findViewById(R.id.upload_post_btn);
+        uploadBtn = view.findViewById(R.id.upload_product_btn);
         uploadImageBtn = view.findViewById(R.id.upload_img);
         progressBar = view.findViewById(R.id.new_post_progress);
         myProfileBtn = view.findViewById(R.id.bottom_bar_profile);
         searchBtn = view.findViewById(R.id.bottom_bar_search);
+        deleteProductBtn = view.findViewById(R.id.delete_product_btn);
+
         existingProduct = NewPostFragmentArgs.fromBundle(getArguments()).getExistingProduct();
 
         product = new Product();
@@ -121,10 +124,11 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
             genderInput.setSelection(genderPos);
             sizeInput.setSelection(sizePos);
             categoryInput.setSelection(categoryPos);
-
             priceInput.setText(existingProduct.getPrice());
             Picasso.get().load(existingProduct.getImg()).into(uploadImageBtn);
 
+            deleteProductBtn.setVisibility(View.VISIBLE);
+            deleteProductBtn.setOnClickListener(this);
             uploadBtn.setText("Edit Post");
         }
 
@@ -174,7 +178,7 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.upload_post_btn:
+            case R.id.upload_product_btn:
                 uploadProduct();
                 break;
             case R.id.upload_img:
@@ -185,6 +189,11 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
                 break;
             case R.id.bottom_bar_search:
                 Navigation.findNavController(view).navigate(NewPostFragmentDirections.actionNewPostFragmentToSelectGenderFragment());
+                break;
+            case R.id.delete_product_btn:
+                deleteExistingProduct();
+                break;
+            default:
                 break;
         }
     }
@@ -257,7 +266,7 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
                         progressBar.setVisibility(View.INVISIBLE);
                         Model.instance.reloadProductList();
                         Toast.makeText(getActivity(), "Upload successfully", Toast.LENGTH_SHORT).show();
-                        Navigation.findNavController(view).navigate(NewPostFragmentDirections.actionNewPostFragmentToProductGridFragment());
+                        Navigation.findNavController(view).navigate(NewPostFragmentDirections.actionNewPostFragmentToProductGridFragment(null));
                     }
                 }
             });
@@ -282,12 +291,25 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View v, int i, long l) {
-//        String selected = "";
-//        selected = adapterView.getItemAtPosition(i).toString();
+
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private void deleteExistingProduct() {
+        if(existingProduct != null) {
+            progressBar.setVisibility(View.VISIBLE);
+            Model.instance.DeletePost(existingProduct, new DeleteProductListener() {
+                @Override
+                public void onComplete(Boolean isSuccess) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    Model.instance.reloadProductList();
+                    Navigation.findNavController(view).navigate(NewPostFragmentDirections.actionNewPostFragmentToMyProfileFragment());
+                }
+            });
+        }
     }
 }
