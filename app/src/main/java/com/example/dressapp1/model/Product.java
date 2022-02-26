@@ -144,6 +144,7 @@ public class Product implements Parcelable {
         String category = json.get(Constants.CATEGORY) + "";
         String img = json.get(Constants.IMG) + "";
         String ownerId = json.get(Constants.OWNER) + "";
+        Boolean isDeleted = (Boolean) json.get("is_deleted");
 
         Double longtitude = (double) json.get(Constants.LANG);
         Double lantitude = (double) json.get(Constants.LANT);
@@ -151,6 +152,7 @@ public class Product implements Parcelable {
         Timestamp ts =  (Timestamp) json.get(Constants.TIME);
 
         Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()), img, longtitude, lantitude, ownerId);
+        product.setDeleted(isDeleted);
         return product;
     }
 
@@ -166,6 +168,8 @@ public class Product implements Parcelable {
         dbProduct.put(Constants.OWNER, ownerId);
         dbProduct.put(Constants.LANG, longtitude);
         dbProduct.put(Constants.LANT, lantitude);
+
+
 
         return dbProduct;
     }

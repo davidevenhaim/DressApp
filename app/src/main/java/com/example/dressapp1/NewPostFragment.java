@@ -302,6 +302,7 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
     private void deleteExistingProduct() {
         if(existingProduct != null) {
             progressBar.setVisibility(View.VISIBLE);
+            existingProduct.setDeleted(true);
             Model.instance.DeletePost(existingProduct, new DeleteProductListener() {
                 @Override
                 public void onComplete(Boolean isSuccess) {
