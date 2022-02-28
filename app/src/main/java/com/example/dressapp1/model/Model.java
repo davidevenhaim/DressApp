@@ -54,7 +54,6 @@ public class Model {
                             if(!product.isDeleted()) {
                                 AppLocalDB.db.productDao().insertAll(product);
                             } else {
-                                Log.d("!", product.getPrice() + " Is deleted");
                                 AppLocalDB.db.productDao().delete(product);
                             } if (product.getLastUpdated() > lLastUpdate){
                                 lLastUpdate = product.getLastUpdated();

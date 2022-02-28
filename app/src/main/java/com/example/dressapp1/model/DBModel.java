@@ -183,7 +183,6 @@ public class DBModel {
     public void editProduct(Product product, Bitmap bitmap, EditProductListener listener) {
         DocumentReference docRef = db.collection(Constants.PRODUCTS).document(product.getId());
         if(bitmap == null) {
-            Log.d("BITMAP null", "bitmap checked and is null!@#!2312312");
             docRef.set(product.toJson()).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
@@ -191,7 +190,6 @@ public class DBModel {
                 }
             });
         } else {
-            Log.d("BITMAP not NULL", "bitmap checked and is NOT!!! !@#!2312312");
             uploadImage(bitmap, product.getId(), new UploadImageListener() {
                 @Override
                 public void onComplete(String url) {
