@@ -9,6 +9,7 @@ import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,7 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
 
         if(email != null && password != null) {
             pBar.setVisibility(View.VISIBLE);
-            setEnabled(false);
+//            setEnabled(false);
             loginUserDB(email, password);
         }
 
