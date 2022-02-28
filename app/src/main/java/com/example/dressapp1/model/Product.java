@@ -138,22 +138,26 @@ public class Product implements Parcelable {
     }
 
     static Product fromJson(Map<String,Object> json) {
-        String size = json.get(Constants.SIZE) + "";
-        String price = json.get(Constants.PRICE) + "";
-        String gender = json.get(Constants.GENDER) + "";
-        String category = json.get(Constants.CATEGORY) + "";
-        String img = json.get(Constants.IMG) + "";
-        String ownerId = json.get(Constants.OWNER) + "";
-        Boolean isDeleted = (Boolean) json.get("is_deleted");
+        try {
+            String size = json.get(Constants.SIZE) + "";
+            String price = json.get(Constants.PRICE) + "";
+            String gender = json.get(Constants.GENDER) + "";
+            String category = json.get(Constants.CATEGORY) + "";
+            String img = json.get(Constants.IMG) + "";
+            String ownerId = json.get(Constants.OWNER) + "";
+            Boolean isDeleted = (Boolean) json.get("is_deleted");
 
-        Double longtitude = (double) json.get(Constants.LANG);
-        Double lantitude = (double) json.get(Constants.LANT);
+            Double longtitude = (double) json.get(Constants.LANG);
+            Double lantitude = (double) json.get(Constants.LANT);
 
-        Timestamp ts =  (Timestamp) json.get(Constants.TIME);
+            Timestamp ts =  (Timestamp) json.get(Constants.TIME);
 
-        Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()), img, longtitude, lantitude, ownerId);
-        product.setDeleted(isDeleted);
-        return product;
+            Product product = new Product(size, price, gender, category, new Long(ts.getSeconds()), img, longtitude, lantitude, ownerId);
+            product.setDeleted(isDeleted);
+            return product;
+        }catch (Error e) {
+        }
+        return new Product();
     }
 
     public Map<String, Object> toJson() {
