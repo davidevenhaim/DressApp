@@ -230,7 +230,7 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
             Toast.makeText(getActivity(), "Category is a required field", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(bitmap == null && existingProduct == null && existingProduct.getImg() == null) {
+        if(bitmap == null) {
             Toast.makeText(getActivity(), "Photo is a required field", Toast.LENGTH_LONG).show();
             return;
         }
@@ -244,6 +244,10 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
 
         if(existingProduct != null) {
             // edit the product.
+            if(existingProduct.getImg() == null && bitmap == null) {
+                Toast.makeText(getActivity(), "Photo is a required field", Toast.LENGTH_LONG).show();
+                return;
+            }
             existingProduct.setSize(size);
             existingProduct.setPrice(price);
             existingProduct.setGender(gender);

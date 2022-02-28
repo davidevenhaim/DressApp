@@ -120,7 +120,6 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
                 if(task.isSuccessful()) {
                         SharedPreferences sp= getActivity().getSharedPreferences("Login", Context.MODE_PRIVATE);
                         SharedPreferences.Editor Ed=sp.edit();
-
                         Ed.putString(Constants.CUR_USER + "_email", email );
                         Ed.putString(Constants.CUR_USER + "_password", password);
                         Ed.putString(Constants.CUR_USER + "_id", user.getUid());

@@ -168,8 +168,7 @@ public class Product implements Parcelable {
         dbProduct.put(Constants.OWNER, ownerId);
         dbProduct.put(Constants.LANG, longtitude);
         dbProduct.put(Constants.LANT, lantitude);
-
-
+        dbProduct.put(Constants.IS_DELETED, false);
 
         return dbProduct;
     }
@@ -214,7 +213,6 @@ public class Product implements Parcelable {
         parcel.writeDouble(lantitude);
         parcel.writeDouble(longtitude);
         parcel.writeString(ownerId);
-
 
         parcel.writeByte((byte) (isDeleted ? 1 : 0));
 

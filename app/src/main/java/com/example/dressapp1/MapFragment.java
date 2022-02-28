@@ -54,7 +54,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 .position(prodcutLocation)
                 .title(curProduct.getCategory());
 
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(prodcutLocation,40F));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(prodcutLocation,12F));
         googleMap.addMarker(markerOptions);
     }
 
