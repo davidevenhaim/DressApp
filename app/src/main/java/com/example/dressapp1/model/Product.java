@@ -32,6 +32,7 @@ public class Product implements Parcelable {
     private double longtitude;
     private double lantitude;
 
+
     public Product(){}
 
     public Product(String size, String price, String gender, String category, Long lastU, String img, double longtitude, double lantitude, String ownerId) {
@@ -146,6 +147,7 @@ public class Product implements Parcelable {
             String img = json.get(Constants.IMG) + "";
             String ownerId = json.get(Constants.OWNER) + "";
             Boolean isDeleted = (Boolean) json.get("is_deleted");
+
 
             Double longtitude = (double) json.get(Constants.LANG);
             Double lantitude = (double) json.get(Constants.LANT);

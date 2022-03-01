@@ -25,22 +25,22 @@
         >
 
         <ImageButton
-            android:background="@color/cardview_shadow_end_color"
             android:id="@+id/bottom_bar_search"
             android:layout_width="20dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/cardview_shadow_end_color"
             android:src="@drawable/search"
-            />
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <ImageButton
-            android:background="@color/cardview_shadow_end_color"
             android:id="@+id/bottom_bar_profile"
             android:layout_width="20dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/cardview_shadow_end_color"
             android:src="@drawable/profile"
-            />
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
     </LinearLayout>
     </LinearLayout>
 

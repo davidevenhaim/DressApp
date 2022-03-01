@@ -25,11 +25,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="TextView"
-        android:textSize="30sp"
         android:layout_marginTop="40sp"
+        android:text="TextView"
+        android:textSize="26sp"
         app:layout_constraintBottom_toTopOf="@+id/product_price"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/product_img"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="TextView"
-        android:textSize="24sp"
+        android:textSize="22sp"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/product_img"
         app:layout_constraintBottom_toBottomOf="@+id/product_favorite_btn"
