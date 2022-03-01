@@ -4,6 +4,7 @@ import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -154,24 +155,30 @@ public class NewPostFragment extends Fragment implements View.OnClickListener, A
         locationRequest.setInterval(1000);
         locationRequest.setFastestInterval(3000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        try {
+            LocationServices.getFusedLocationProviderClient(getActivity())
+                    .requestLocationUpdates(locationRequest, new LocationCallback() {
+                        @Override
+                        public void onLocationResult(@NonNull LocationResult locationResult) {
+                            super.onLocationResult(locationResult);
+                            if(getActivity() != null) {
+                                LocationServices.getFusedLocationProviderClient(getActivity())
+                                        .removeLocationUpdates(this);
+                                if (locationResult != null && locationResult.getLocations().size() > 0) {
+                                    int latestLocationIndex = locationResult.getLocations().size() - 1;
+                                    double longtitue = locationResult.getLastLocation().getLongitude();
+                                    double latitude = locationResult.getLastLocation().getLatitude();
 
-        LocationServices.getFusedLocationProviderClient(getActivity())
-                .requestLocationUpdates(locationRequest, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(@NonNull LocationResult locationResult) {
-                        super.onLocationResult(locationResult);
-                        LocationServices.getFusedLocationProviderClient(getActivity())
-                                .removeLocationUpdates(this);
-                        if (locationResult != null && locationResult.getLocations().size() > 0) {
-                            int latestLocationIndex = locationResult.getLocations().size() - 1;
-                            double longtitue = locationResult.getLastLocation().getLongitude();
-                            double latitude = locationResult.getLastLocation().getLatitude();
-
-                            product.setLongtitude(longtitue);
-                            product.setLantitude(latitude);
+                                    product.setLongtitude(longtitue);
+                                    product.setLantitude(latitude);
+                                }
+                            }
                         }
-                    }
-                }, Looper.getMainLooper());
+                    }, Looper.getMainLooper());
+        } catch(NullPointerException err) {
+            Log.d("1", "Null Pointer Exception" + err.getMessage());
+        }
+
     }
 
 

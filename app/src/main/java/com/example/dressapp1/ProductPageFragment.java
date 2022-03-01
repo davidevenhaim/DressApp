@@ -34,7 +34,7 @@ public class ProductPageFragment extends Fragment implements View.OnClickListene
     Button callBtn, mapBtn, editProduct;
     TextView priceText, sizeText;
     ProgressBar progressBar;
-    ImageButton myProfileBtn, searchBtn;
+    ImageButton myProfileBtn, searchBtn,addProdBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,7 @@ public class ProductPageFragment extends Fragment implements View.OnClickListene
         progressBar = view.findViewById(R.id.product_progress);
         myProfileBtn = view.findViewById(R.id.bottom_bar_profile);
         searchBtn = view.findViewById(R.id.bottom_bar_search);
+        addProdBtn = view.findViewById(R.id.add_new_post_btn);
         editProduct = view.findViewById(R.id.edit_product);
 
         callBtn.setOnClickListener(this);
@@ -63,6 +64,7 @@ public class ProductPageFragment extends Fragment implements View.OnClickListene
         myProfileBtn.setOnClickListener(this);
         searchBtn.setOnClickListener(this);
         editProduct.setOnClickListener(this);
+        addProdBtn.setOnClickListener(this);
 
         Model.instance.getUserById(curProduct.getOwnerId(), new GetUserById() {
             @Override
@@ -106,6 +108,9 @@ public class ProductPageFragment extends Fragment implements View.OnClickListene
                 ProductPageFragmentDirections.ActionProductPageFragmentToNewPostFragment action =
                         ProductPageFragmentDirections.actionProductPageFragmentToNewPostFragment(curProduct);
                 Navigation.findNavController(view).navigate(action);
+                break;
+            case R.id.add_new_post_btn:
+                Navigation.findNavController(view).navigate(ProductPageFragmentDirections.actionProductPageFragmentToNewPostFragment(null));
                 break;
             default:
                 break;
