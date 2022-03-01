@@ -78,6 +78,7 @@ public class DBModel {
                         });
                     }  else {
                         Log.d("ERR", "Error creating account");
+                        listener.onComplete(null, task);
                     }
             });
     }

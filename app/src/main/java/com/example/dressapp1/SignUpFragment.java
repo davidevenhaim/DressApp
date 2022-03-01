@@ -101,7 +101,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             passwordInput.requestFocus();
             return;
         }
-        if(password.length() < 2) {
+        if(password.length() < 6) {
             phoneInput.setError("Password is not long enough :(");
             passwordInput.requestFocus();
             return;
@@ -119,13 +119,11 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         setEnabled(false);
         DBModel.dbInstance.registerUser(user, password, (user1, task) -> {
             if (task.isSuccessful()) {
-                Toast.makeText(getActivity(), "User Created - Check your email inbox", Toast.LENGTH_LONG).show();
-//                user1.sendEmailVerification();
+                Toast.makeText(getActivity(), "User Created - Please log in again :)", Toast.LENGTH_LONG).show();
                 Navigation.findNavController(view).navigate(SignUpFragmentDirections.actionSignUpFragmentToLogInFragment());
-                Log.d("Success", "Email sent");
             } else {
-                Toast.makeText(getActivity(), "User could not be created", Toast.LENGTH_LONG).show();
-                Log.d("ELSE", "Secondary else case reached.");
+                Toast.makeText(getActivity(), "User could not be created User Email/Password are not valid " , Toast.LENGTH_LONG).show();
+                pBar.setVisibility(View.INVISIBLE);
             }
             setEnabled(true);
         });
