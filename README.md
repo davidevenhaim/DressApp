@@ -44,4 +44,10 @@ Throughout the use of the app there is an option to choose to add a post by clic
 
 ![WhatsApp Image 2022-03-01 at 21 31 55](https://user-images.githubusercontent.com/73758263/156249139-09a7442b-78a3-43c9-badd-f82fede38cd1.jpeg)
 
+MAP:
+The customer can view a map that shows where an item is located
+
+![WhatsApp Image 2022-03-01 at 21 31 11](https://user-images.githubusercontent.com/73758263/156250930-514afee6-17f9-47b3-a63f-9f6ec4d8f667.jpeg)
+![WhatsApp Image 2022-03-01 at 21 31 20](https://user-images.githubusercontent.com/73758263/156250951-c81042d0-c90a-4710-a488-f6f1168c37a1.jpeg)
+ 
 *From each screen there is an option to click on clothing search or user profile
