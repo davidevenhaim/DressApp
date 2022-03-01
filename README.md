@@ -48,6 +48,7 @@ MAP
 The customer can view a map that shows where an item is located
 
 ![WhatsApp Image 2022-03-01 at 21 31 11](https://user-images.githubusercontent.com/73758263/156250930-514afee6-17f9-47b3-a63f-9f6ec4d8f667.jpeg)
-![WhatsApp Image 2022-03-01 at 21 31 20](https://user-images.githubusercontent.com/73758263/156250951-c81042d0-c90a-4710-a488-f6f1168c37a1.jpeg)
+![WhatsApp Image 2022-03-02 at 00 02 20](https://user-images.githubusercontent.com/73758263/156260789-60427dff-117d-4941-aa83-a384950ef03a.jpeg)
+
  
 *From each screen there is an option to click on clothing search or user profile
