@@ -52,7 +52,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Product p = data.get(position);
         holder.title.setText(p.getCategory());
-        holder.price.setText(p.getPrice());
+        holder.price.setText(p.getPrice() + "$");
 
         if(p.getImg() != null) {
             Picasso.get().load(p.getImg()).into(holder.img);
