@@ -44,10 +44,12 @@ Throughout the use of the app there is an option to choose to add a post by clic
 
 ![WhatsApp Image 2022-03-01 at 21 31 55](https://user-images.githubusercontent.com/73758263/156249139-09a7442b-78a3-43c9-badd-f82fede38cd1.jpeg)
 
-MAP
-The customer can view a map that shows where an item is located
+PRODUCT PAGE
 
 ![WhatsApp Image 2022-03-01 at 21 31 11](https://user-images.githubusercontent.com/73758263/156250930-514afee6-17f9-47b3-a63f-9f6ec4d8f667.jpeg)
+
+MAP
+The customer can view a map that shows where an item is located
 ![WhatsApp Image 2022-03-02 at 00 02 20](https://user-images.githubusercontent.com/73758263/156260789-60427dff-117d-4941-aa83-a384950ef03a.jpeg)
 
  
