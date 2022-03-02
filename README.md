@@ -29,7 +29,7 @@ After log in the user go to home page than the user can chose a gendre of clothe
 ![WhatsApp Image 2022-03-01 at 21 30 40](https://user-images.githubusercontent.com/73758263/156248881-dae98d3e-5ccc-4722-82ac-bc7130eddede.jpeg)
 
 
-CATEGORES OF CLOTHES
+MAN'S MAIN PAGE
 
 ![WhatsApp Image 2022-03-01 at 21 30 50](https://user-images.githubusercontent.com/73758263/156249247-34997011-8195-4c67-9218-3674747af9b7.jpeg)
 
