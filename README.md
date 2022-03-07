@@ -12,7 +12,7 @@ on an Android device
 
 ![WhatsApp Image 2022-03-01 at 23 12 53](https://user-images.githubusercontent.com/73758263/156249799-bdec9036-62c7-48b4-92b6-cbb8103fd1fa.jpeg)
 
-For start sing up or log in to the app
+First pages are: sign up or log in to the app
 
 LOG IN
 
@@ -24,7 +24,7 @@ SIGN-UP
 ![WhatsApp Image 2022-03-01 at 21 30 20](https://user-images.githubusercontent.com/73758263/156248864-45e82144-fe03-4eec-a0c0-2217778d1812.jpeg)
 
 HOME PAGE 
-After log in the user go to home page than the user can chose a gendre of clothes ( woman/man/explore all )
+After log in the user goes to the home page than the user can choose a gender of clothes he wants to see ( woman/man/explore all )
 
 ![WhatsApp Image 2022-03-01 at 21 30 40](https://user-images.githubusercontent.com/73758263/156248881-dae98d3e-5ccc-4722-82ac-bc7130eddede.jpeg)
 
@@ -34,7 +34,7 @@ MAN'S MAIN PAGE
 ![WhatsApp Image 2022-03-01 at 21 30 50](https://user-images.githubusercontent.com/73758263/156249247-34997011-8195-4c67-9218-3674747af9b7.jpeg)
 
 PROFILE USER 
-show the user details and products
+This page shows the user details and products
 
 ![WhatsApp Image 2022-03-01 at 21 31 33](https://user-images.githubusercontent.com/73758263/156249031-bf4b98eb-c20d-4cd7-b028-e100325cac8c.jpeg)
 
